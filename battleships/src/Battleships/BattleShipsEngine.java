@@ -1,12 +1,5 @@
 package Battleships;
 
-import javax.swing.JTextField;
-
-import Battleships.Graphics.AttackPanel;
-import Battleships.Graphics.HomePanel;
-import Battleships.Graphics.InfluencePanel;
-
-
 public class BattleShipsEngine {
 	
 	public GameState gameState;
@@ -102,10 +95,10 @@ public class BattleShipsEngine {
 	private void AgentTurn() {
 		while(gameState.isAgentTurn()) {
 			System.out.println("agent turn");
-			smith.nextShot(gameState.influenceMap, gameState.compAtt);
+			smith.nextShot(gameState.influenceMap, gameState.compHomeGrid);
 			gui.agentShot(smith.getI(),smith.getJ());
 			System.out.println("shot at " + smith.getI() + " " +smith.getJ());
-			System.out.println(gameState.compAtt.toString());
+			System.out.println(gameState.compHomeGrid.toString());
 			determineIfShotSunkAShip(gui, smith);
 			gameState.setShipSunkStates();
 			this.threadSleep(1000);
@@ -168,8 +161,7 @@ public class BattleShipsEngine {
 						if(gameState.playerHomeGrid.getGridVal(i,j) == -5)
 						{
 							smith.setSunk(i,j);
-							gui.paintSubSunk = true;
-							
+							gui.paintSubSunk = true;	
 						}
 					}
 				}

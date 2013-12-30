@@ -245,7 +245,7 @@ public class GUI extends JFrame
 		{
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
-				if ( gameState.playerAtt.getGridVal(i,j) == 1)
+				if ( gameState.playerHomeGrid.getGridVal(i,j) == 1)
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
 				else
 				if ( gameState.isCompHomeGridLessThanMinus1(i,j))
@@ -659,7 +659,7 @@ public class GUI extends JFrame
 						if(sqrVal == 0)
 						{
 							System.out.println( gameState.playerHomeGrid.shot(X,Y));
-							 gameState.compAtt.set(X,Y,1);
+							 gameState.compHomeGrid.set(X,Y,1);
 							 gameState.influenceMap.miss(X,Y);
 							this.paintMap();
 							Graphics hp =  homePanel.getGraphics();	
@@ -672,7 +672,7 @@ public class GUI extends JFrame
 						if(sqrVal > 1)
 						{
 							System.out.println( gameState.playerHomeGrid.shot(X,Y));
-							 gameState.compAtt.update(X,Y,8);
+							 gameState.compHomeGrid.set(X,Y,8);
 							 gameState.influenceMap.hit(X,Y);
 							Graphics hp =  homePanel.getGraphics();	
 							HitIcon.paint(hp,(Y*20),(X*20));
@@ -682,7 +682,7 @@ public class GUI extends JFrame
 						}
 						
 						System.out.println("compAtt");						
-						System.out.println( gameState.compAtt.toString());
+						System.out.println( gameState.compHomeGrid.toString());
 						
 						if(sqrVal==0)
 							this. gameState.setPlayerTurn();

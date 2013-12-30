@@ -14,22 +14,18 @@ public class HomeMousePressListener extends MouseAdapter {
 		this.gui = gui;
 	}
 	
-	
-			public void mousePressed(MouseEvent event)
-			{
-				int gridj= resolveAxisCoOrdinate(event.getX());
-				int gridi= resolveAxisCoOrdinate(event.getY());
+	public void mousePressed(MouseEvent event) {
+		int gridj= resolveAxisCoOrdinate(event.getX());
+		int gridi= resolveAxisCoOrdinate(event.getY());
 				
-				if(!this.gui.gameState.isBothPlayerAndAgentShipsDeployed())
-				{
-					gui.deploy(gridi,gridj);
-					
-				}
-				System.out.println("Element corresponds to " + gridi + gridj);
-				//repaint();
-			}
-			private int resolveAxisCoOrdinate(int x) {
-				return AxisResolverFactory.resolveAxisCoOrdinate(x);
-			}
+		if(!this.gui.gameState.isBothPlayerAndAgentShipsDeployed()) {
+				gui.deploy(gridi,gridj);	
+		}
+			
+		System.out.println("Element corresponds to " + gridi + gridj);
+	}
+	private int resolveAxisCoOrdinate(int x) {
+		return AxisResolverFactory.resolveAxisCoOrdinate(x);
+	}
 
 }

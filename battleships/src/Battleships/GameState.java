@@ -12,48 +12,51 @@ public class GameState {
 
 	private static final int WidthOfGrid = 10;
 	private static final int HeightOfGrid = 10;
-	private boolean gameOver;
-	public Grid playerHomeGrid;
-	private boolean playerBattleSunk;
-	private boolean allAgentShipsSunk;
-	private boolean allPlayerShipsSunk;
-	boolean playerSubSunk;
-	boolean playerDestSunk;
-	private boolean agentBattleSunk;
-	private boolean agentAirSunk;
-	private Grid compHomeGrid;
-	public Grid compAtt;
-	public Grid playerAtt;
-	public InfluenceMap influenceMap;
-	private boolean playerMineSunk;
-	private boolean agentDestSunk;
-	private boolean agentSubSunk;
-	private boolean agentMineSunk;
-	private boolean playerWins;
 	private boolean isGameOver;
-
-	public boolean playerTurn;
-	public boolean agentTurn;
+	
 	private boolean playerShipsdeployed;
 	private boolean agentShipsDeployed;
 	
+	public Grid playerHomeGrid;
+	//public Grid playerAtt;
+	private boolean playerBattleSunk;
+	private boolean playerSubSunk;
+	private boolean playerDestSunk;
+    private boolean playerAirSunk;
+    private boolean playerMineSunk;
+    private boolean playerWins;
+    public boolean playerTurn;
+    private boolean allPlayerShipsSunk;
+    
+    public Grid compHomeGrid;
+	//public Grid compAtt;
+	private boolean agentBattleSunk;
+	private boolean agentAirSunk;
+	private boolean agentDestSunk;
+	private boolean agentSubSunk;
+	private boolean agentMineSunk;
+	public boolean agentTurn;
+	private boolean allAgentShipsSunk;
+	
+	public InfluenceMap influenceMap;
+	
 	public GameState() {
-		gameOver = false;
+		isGameOver = false;
 		playerBattleSunk = false;
 		allAgentShipsSunk = false;
 		allPlayerShipsSunk = false;
 		playerSubSunk = false;
+		playerAirSunk = false;
 		agentAirSunk = false;
 		agentBattleSunk = false;
 		playerHomeGrid = new Grid(WidthOfGrid, HeightOfGrid);
 		compHomeGrid = new Grid(WidthOfGrid, HeightOfGrid);
-		compAtt = new Grid(WidthOfGrid, HeightOfGrid);
-		playerAtt = new Grid(WidthOfGrid, HeightOfGrid);
+		//compAtt = new Grid(WidthOfGrid, HeightOfGrid);
+		//playerAtt = new Grid(WidthOfGrid, HeightOfGrid);
 		influenceMap = new InfluenceMap();
 		playerTurn = true;
 		agentTurn = false;
 		playerShipsdeployed = false;
-
 	}
 
 	public void outputHitList(JTextComponent displayTextbox)
@@ -83,21 +86,21 @@ public class GameState {
 	}
 	
 	public boolean IsGameOver() {
-		return gameOver;
+		return isGameOver;
 	}
 
 	public void gameNotOver() {
-		gameOver = false;
+		isGameOver = false;
 
 	}
 
 	public void SetGameOver() {
-		gameOver = true;
+		isGameOver = true;
 
 	}
 
 	public void setShipSunkStates() {
-		playerHomeGrid.isAirSunk();
+		playerAirSunk = playerHomeGrid.isAirSunk();
 		playerBattleSunk = playerHomeGrid.isBattleSunk();
 		playerDestSunk = playerHomeGrid.isDestSunk();
 		playerSubSunk = playerHomeGrid.isSubSunk();
@@ -140,7 +143,7 @@ public class GameState {
 	
 	public String acceptPlayerShot(int i, int j, Graphics attackPanelGraphics, JTextField outText)
 	{
-		int sqr = playerAtt.getGridVal(i,j);
+		int sqr = playerHomeGrid.getGridVal(i,j);
 		String out ="";
 
 			if (sqr == 0)
@@ -153,14 +156,14 @@ public class GameState {
 				if(hit)
 				{
 					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));
-					playerAtt.set(i,j,9);
+					playerHomeGrid.set(i,j,9);
 					outText.setText("HIT! Have Another Turn!");
 				}
 				else
 				{
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
 					compHomeGrid.set(i,j,1);
-					playerAtt.set(i,j,1);
+					playerHomeGrid.set(i,j,1);
 					out="Miss!"+ playerTurn;
 					outText.setText("Miss. Agent's Turn");
 					startAgentTurn();
@@ -172,7 +175,7 @@ public class GameState {
 		setShipSunkStates();
 		
 		out = out + "CompHome " +compHomeGrid.toString();
-		out = out + "player Attack = \n" + playerAtt.toString();
+		out = out + "player Attack = \n" + playerHomeGrid.toString();
 	
 		
 		return out;	
@@ -202,7 +205,7 @@ public class GameState {
 	}
 
 	public boolean IsAcceptingPlayerInput() {
-		return playerTurn && !gameOver && playerShipsdeployed;
+		return playerTurn && !isGameOver && playerShipsdeployed;
 	}
 
 	public void addAgentShips(Grid gridWithAgentShipsPlaced) {
