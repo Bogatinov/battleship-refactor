@@ -8,7 +8,7 @@ public class HShipGridSetter extends ShipGridSetterBehavior {
 	@Override
 	protected void UpdateBoard(int CoordinateX, int CoordinateY) {
 		for (int c = CoordinateY; c < CoordinateY + shipLength; c++) {
-				board.update(CoordinateX, c, shipGridValue);
+				board.set(CoordinateX, c, shipGridValue);
 			}
 		}
 
