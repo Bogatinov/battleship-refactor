@@ -123,11 +123,11 @@ public class GameState {
 			allPlayerShipsSunk = true;
 	}
 	
-	public boolean areAllAgentShipsSunk() {
+	public boolean areAgentShipsSunk() {
 		return allAgentShipsSunk;
 	}
 
-	public boolean getPlayerShipsSunk() {
+	public boolean arePlayerShipsSunk() {
 		return allPlayerShipsSunk;
 	}
 
@@ -153,13 +153,13 @@ public class GameState {
 				if(hit)
 				{
 					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));
-					playerAtt.update(i,j,9);
+					playerAtt.set(i,j,9);
 					outText.setText("HIT! Have Another Turn!");
 				}
 				else
 				{
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
-					compHomeGrid.update(i,j,1);
+					compHomeGrid.set(i,j,1);
 					playerAtt.set(i,j,1);
 					out="Miss!"+ playerTurn;
 					outText.setText("Miss. Agent's Turn");
@@ -188,6 +188,14 @@ public class GameState {
 	public boolean isBothPlayerAndAgentShipsDeployed() {
 		return playerShipsdeployed && agentShipsDeployed;
 	}
+	
+	public boolean arePlayerShipsDeployed() {
+		return playerShipsdeployed;
+	}
+	
+	public boolean areAgentShipsDeployed() {
+		return agentShipsDeployed;
+	}
 
 	public void SetAllShipsDeployed() {
 		playerShipsdeployed = true;
@@ -202,17 +210,17 @@ public class GameState {
 		agentShipsDeployed = compHomeGrid.areShipsPlaced();
 	}
 
-	public boolean isCompHomegridRefIsminus3(int i, int j) {
-		return compHomeGrid.getGridVal(i,j) == -3;
-	}
-
-	public boolean isCompHomeGridRefMinus4(int i, int j) {
-		return compHomeGrid.getGridVal(i,j) == -4;
-	}
-
-	public boolean isCompHomeGridLessThanMinus1(int i,int j) {
-		return compHomeGrid.getGridVal(i,j) < -1;
-	}
+//	public boolean isCompHomegridRefIsminus3(int i, int j) {
+//		return compHomeGrid.getGridVal(i,j) == -3;
+//	}
+//
+//	public boolean isCompHomeGridRefMinus4(int i, int j) {
+//		return compHomeGrid.getGridVal(i,j) == -4;
+//	}
+//
+//	public boolean isCompHomeGridLessThanMinus1(int i,int j) {
+//		return compHomeGrid.getGridVal(i,j) < -1;
+//	}
 
 	public void startAgentTurn() {
 		agentTurn = true;

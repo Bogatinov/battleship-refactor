@@ -9,9 +9,9 @@ import Battleships.Factories.AxisResolverFactory;
 public class HomeMousePressListener extends MouseAdapter {
 	private GUI gui;
 	
-	public HomeMousePressListener(GUI gui2)
+	public HomeMousePressListener(GUI gui)
 	{
-		gui=gui2;
+		this.gui = gui;
 	}
 	
 	
@@ -20,7 +20,7 @@ public class HomeMousePressListener extends MouseAdapter {
 				int gridj= resolveAxisCoOrdinate(event.getX());
 				int gridi= resolveAxisCoOrdinate(event.getY());
 				
-				if(!gameState.isBothPlayerAndAgentShipsDeployed())
+				if(!this.gui.gameState.isBothPlayerAndAgentShipsDeployed())
 				{
 					gui.deploy(gridi,gridj);
 					

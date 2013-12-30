@@ -11,8 +11,6 @@ public class BattleShipsEngine {
 	
 	public GameState gameState;
 	public boolean agentWins;
-	public boolean horiz;
-	public boolean showMap;
 	public boolean minePlaced;
 	public boolean destPlaced;
 	public boolean subPlaced;
@@ -31,6 +29,10 @@ public class BattleShipsEngine {
 		this.waitForPlayerToPlaceShips();
 		this.loadingGame();
 		this.startGame();
+		this.endGame();
+	}
+	
+	private void endGame() {
 		System.out.println("Game Over!");
 		if(gameState.isPlayerWinner())
 		{
@@ -49,8 +51,6 @@ public class BattleShipsEngine {
 		destPlaced = false;
 		subPlaced = false;
 		battlePlaced = false;
-		horiz = true;
-		showMap= true;
 		gui = new GUI(new GameState());
 		smith = new Agent();
 	}
@@ -64,7 +64,7 @@ public class BattleShipsEngine {
 	}
 	
 	private void waitForPlayerToPlaceShips() {
-		while(!gameState.playerHomeGrid.areShipsPlaced())
+		while(!gameState.arePlayerShipsDeployed())
 		{
 				//PlayerDeploymentPhase, wait for player to place all their ships
 		}
@@ -79,64 +79,57 @@ public class BattleShipsEngine {
 	private void startGame() {
 		while (!gameState.IsGameOver())
 		{
-			
-			while (gameState.isPlayerTurn())
-			{
-				gameState.setShipSunkStates();
-				if(gameState.areAllAgentShipsSunk())
-				{
-					System.out.println("All sunk");
-					gameState.SetGameOver();
-					gameState.PlayerIsTheWinner();
-				}
-			}
+			this.PlayerTurn();
 			gui.repaint();
-		
-			while(gameState.isAgentTurn())
-			{
-			
-				System.out.println("agent turn");
-				smith.nextShot(gameState.influenceMap, gameState.compAtt);
-				gui.agentShot(smith.getI(),smith.getJ());
-				System.out.println("shot at " + smith.getI() + " " +smith.getJ());
-				System.out.println(gameState.compAtt.toString());
-				//if(gameState.playerHome.get(i,j
-				
-				
-				
-				determineIfShotSunkAShip(gui, smith);
-				
-				gameState.setShipSunkStates();
-				
-			
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				/*
-				if(g.getAgentShipsSunk())
-				{
-					g.setGameOver();
-					g.setPlayerWins();
-				}
-				*/
-				if(gameState.getPlayerShipsSunk())
-				{
-					gui.setAgentWins();
-					gameState.SetGameOver();
-					gameState.setPlayerTurn();
-					
-				}			
-			}
-			
-
+			this.AgentTurn();
 		}
 	}
+	private void isAgentWinner() {
+		if(gameState.arePlayerShipsSunk())
+		{
+			gameState.SetGameOver();
+			gameState.setPlayerTurn();
+		}
+	}
+	private void isPlayerWinner() {
+		if(gameState.areAgentShipsSunk())
+		{
+			System.out.println("All sunk");
+			gameState.SetGameOver();
+			gameState.PlayerIsTheWinner();
+		}
+	}
+	private void AgentTurn() {
+		while(gameState.isAgentTurn()) {
+			System.out.println("agent turn");
+			smith.nextShot(gameState.influenceMap, gameState.compAtt);
+			gui.agentShot(smith.getI(),smith.getJ());
+			System.out.println("shot at " + smith.getI() + " " +smith.getJ());
+			System.out.println(gameState.compAtt.toString());
+			determineIfShotSunkAShip(gui, smith);
+			gameState.setShipSunkStates();
+			this.threadSleep(1000);
+			this.isAgentWinner();
+		}
+	}
+	private void threadSleep(int miliseconds) {
+		try {
+			Thread.sleep(miliseconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}	
+	}
+	private void PlayerTurn() {
+		while (gameState.isPlayerTurn())
+		{
+			gameState.setShipSunkStates();
+			this.isPlayerWinner();
+		}
+	}
+	
 	private void determineIfShotSunkAShip(GUI gui, Agent smith) {
 		System.out.println("Player Home board \n" + gameState.playerHomeGrid.toString());
-		if(gameState.playerHomeGrid.isMineSunk()&& !gui.paintMineSunk)
+		if(gameState.playerHomeGrid.isMineSunk() && !gui.paintMineSunk)
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
@@ -202,7 +195,7 @@ public class BattleShipsEngine {
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(gameState.playerHomeGrid.getGridVal(i,j) ==-3)
+						if(gameState.playerHomeGrid.getGridVal(i,j) == -3)
 						{
 							smith.setSunk(i,j);
 							gui.paintAirSunk = true;

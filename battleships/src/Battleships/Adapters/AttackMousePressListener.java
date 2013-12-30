@@ -1,23 +1,26 @@
 package Battleships.Adapters;
 
 import java.awt.Graphics;
-import Battleships.GUI;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JTextField;
+
+import Battleships.GUI;
+import Battleships.GameState;
 import Battleships.Factories.AxisResolverFactory;
 import Battleships.Graphics.AttackPanel;
 
 public class AttackMousePressListener extends MouseAdapter
 {
 	
-	private AttackPanel a;
-	private GUI gui;
+	private AttackPanel attackPanel;
+	private GameState gameState;
 	
-	public AttackMousePressListener(AttackPanel p, GUI gui2)
+	public AttackMousePressListener(AttackPanel attackPanel, GameState gameState)
 	{
-		a=p;
-		gui=gui2;
+		this.attackPanel = attackPanel;
+		this.gameState = gameState;
 	}
 	  
 	
@@ -31,15 +34,12 @@ public class AttackMousePressListener extends MouseAdapter
 					int gridj= resolveAxisCoOrdinate(x);
 					int gridi= resolveAxisCoOrdinate(y);
 				
-					Graphics attackPanelGraphics = a.getGraphics();
+					Graphics attackPanelGraphics = attackPanel.getGraphics();
 					
-	                String acceptPlayerShotString = 
+	                JTextField outText = null;
+					String acceptPlayerShotString = 
 	                	gameState.acceptPlayerShot(gridi,gridj, attackPanelGraphics, outText);
-	                
-	                //gui.gameState.updatePlayerClick(gridi, gridj, gui);
-	                
-	                
-	                
+
 					System.out.println(acceptPlayerShotString);
 					System.out.println("Element corresponds to " + gridi + gridj);
 				}
