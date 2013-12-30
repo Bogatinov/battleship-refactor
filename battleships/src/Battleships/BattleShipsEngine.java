@@ -169,6 +169,7 @@ public class BattleShipsEngine {
 						{
 							smith.setSunk(i,j);
 							gui.paintSubSunk = true;
+							
 						}
 					}
 				}
