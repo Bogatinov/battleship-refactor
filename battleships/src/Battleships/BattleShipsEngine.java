@@ -99,7 +99,7 @@ public class BattleShipsEngine {
 			gui.agentShot(smith.getI(),smith.getJ());
 			System.out.println("shot at " + smith.getI() + " " +smith.getJ());
 			System.out.println(gameState.compHomeGrid.toString());
-			determineIfShotSunkAShip(gui, smith);
+			gameState.determineIfShotSunkAShip(gui, smith);
 			gameState.setShipSunkStates();
 			this.threadSleep(1000);
 			this.isAgentWinner();
@@ -117,84 +117,6 @@ public class BattleShipsEngine {
 		{
 			gameState.setShipSunkStates();
 			this.isPlayerWinner();
-		}
-	}
-	
-	private void determineIfShotSunkAShip(GUI gui, Agent smith) {
-		System.out.println("Player Home board \n" + gameState.playerHomeGrid.toString());
-		if(gameState.playerHomeGrid.isMineSunk() && !gui.paintMineSunk)
-		{
-				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
-				{
-					for (int j = 0; j < 10; j++)//change this to CoLumns for default
-					{
-						if(gameState.playerHomeGrid.getGridVal(i,j) == -6)
-						{
-							smith.setSunk(i,j);
-							gui.paintMineSunk = true;
-						}
-					}
-				}
-		}
-		
-		if(gameState.playerHomeGrid.isDestSunk() && !gui.paintDestSunk)
-		{
-				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
-				{
-					for (int j = 0; j < 10; j++)//change this to CoLumns for default
-					{
-						if(gameState.playerHomeGrid.getGridVal(i,j) == -1)
-						{
-							smith.setSunk(i,j);
-							gui.paintDestSunk = true;
-						}
-					}
-				}
-		}
-		
-		if(gameState.playerHomeGrid.isSubSunk() && !gui.paintSubSunk)
-		{
-				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
-				{
-					for (int j = 0; j < 10; j++)//change this to CoLumns for default
-					{
-						if(gameState.playerHomeGrid.getGridVal(i,j) == -5)
-						{
-							smith.setSunk(i,j);
-							gui.paintSubSunk = true;	
-						}
-					}
-				}
-		}
-		
-		if(gameState.playerHomeGrid.isBattleSunk() && !gui.paintBattleSunk)
-		{
-				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
-				{
-					for (int j = 0; j < 10; j++)//change this to CoLumns for default
-					{
-						if(gameState.playerHomeGrid.getGridVal(i,j) == -4)
-						{
-							smith.setSunk(i,j);
-							gui.paintBattleSunk = true;
-						}
-					}
-				}
-		}
-		
-		if(gameState.playerHomeGrid.isAirSunk() && !gui.paintAirSunk)
-		{
-				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
-				{
-					for (int j = 0; j < 10; j++)//change this to CoLumns for default
-					{
-						if(gameState.playerHomeGrid.getGridVal(i,j) == -3)
-						{
-							smith.setSunk(i,j);
-							gui.paintAirSunk = true;
-						}
-					}
-				}
 		}
 	}
 	

@@ -255,4 +255,82 @@ public class GameState {
 	public boolean isAgentTurn() {
 		return agentTurn && !playerTurn;
 	}
+	
+	public void determineIfShotSunkAShip(GUI gui, Agent smith) {
+		System.out.println("Player Home board \n" + playerHomeGrid.toString());
+		if(playerHomeGrid.isMineSunk())
+		{
+				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
+				{
+					for (int j = 0; j < 10; j++)//change this to CoLumns for default
+					{
+						if(playerHomeGrid.getGridVal(i,j) == -6)
+						{
+							smith.setSunk(i,j);
+							gui.paintMineSunk = true;
+						}
+					}
+				}
+		}
+		
+		if(playerHomeGrid.isDestSunk())
+		{
+				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
+				{
+					for (int j = 0; j < 10; j++)//change this to CoLumns for default
+					{
+						if(playerHomeGrid.getGridVal(i,j) == -1)
+						{
+							smith.setSunk(i,j);
+							gui.paintDestSunk = true;
+						}
+					}
+				}
+		}
+		
+		if(playerHomeGrid.isSubSunk())
+		{
+				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
+				{
+					for (int j = 0; j < 10; j++)//change this to CoLumns for default
+					{
+						if(playerHomeGrid.getGridVal(i,j) == -5)
+						{
+							smith.setSunk(i,j);
+							gui.paintSubSunk = true;	
+						}
+					}
+				}
+		}
+		
+		if(playerHomeGrid.isBattleSunk())
+		{
+				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
+				{
+					for (int j = 0; j < 10; j++)//change this to CoLumns for default
+					{
+						if(playerHomeGrid.getGridVal(i,j) == -4)
+						{
+							smith.setSunk(i,j);
+							gui.paintBattleSunk = true;
+						}
+					}
+				}
+		}
+		
+		if(playerHomeGrid.isAirSunk())
+		{
+				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
+				{
+					for (int j = 0; j < 10; j++)//change this to CoLumns for default
+					{
+						if(playerHomeGrid.getGridVal(i,j) == -3)
+						{
+							smith.setSunk(i,j);
+							gui.paintAirSunk = true;
+						}
+					}
+				}
+		}
+	}
 }

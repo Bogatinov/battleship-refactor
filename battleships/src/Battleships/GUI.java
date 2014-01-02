@@ -245,10 +245,10 @@ public class GUI extends JFrame
 		{
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
-				if ( gameState.playerHomeGrid.getGridVal(i,j) == 1)
+				if (gameState.playerHomeGrid.getGridVal(i,j) == 1)
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
 				else
-				if ( gameState.isCompHomeGridLessThanMinus1(i,j))
+				if (gameState.compHomeGrid.getGridVal(i,j) < -1)
 					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));
 				
 				
