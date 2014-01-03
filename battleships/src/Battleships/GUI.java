@@ -16,6 +16,7 @@ import Battleships.Adapters.NewButtonAction;
 import Battleships.Adapters.QuitButtonAction;
 import Battleships.Adapters.RotateButtonAction;
 import Battleships.Adapters.ShowButtonAction;
+import Battleships.Factories.GUIFactory;
 import Battleships.Graphics.AircraftCarrier;
 import Battleships.Graphics.AircraftCarrierH;
 import Battleships.Graphics.AttackPanel;
@@ -43,6 +44,7 @@ public class GUI extends JFrame
 	public int i;
 	public int j;
 	public GameState gameState;
+	private GUIFactory guiFactory;
 	
 	public boolean horiz;
 	public boolean showMap;
@@ -56,166 +58,8 @@ public class GUI extends JFrame
 
 	public GUI(GameState paramGameState)
 	{
-		super("Battleships");	
-		this.setLayout();
-		this.initializeVariables();
-		// gameState = paramGameState;
-		this.setContentPane();
-		this.finishLayout();
-	}
-	
-	private void setLayout() {
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-	}
-	
-	private void initializeVariables() {
-		paintMineSunk= false;
-		paintDestSunk= false;
-		paintSubSunk= false;
-		paintBattleSunk= false;
-		paintAirSunk= false;
-		horiz = true;
-		showMap= true;
-	}
-	
-	private void setContentPane() {
-		Container contentPane = this.getContentPane();
-		contentPane.setLayout(new BorderLayout(2,1));
-		contentPane.add(createCenterPanel(),BorderLayout.CENTER);
-		contentPane.add(createSouthPanel(),BorderLayout.SOUTH);
-	}
-	
-	private void finishLayout() {
-		this.pack();
-		this.setSize(640,400);
-		this.setVisible(true);
-	}
-	
-	private Container createCenterPanel() {
-		Container CenterPanel = new Container();
-		CenterPanel.setLayout(new GridLayout(1,3));
-		CenterPanel.add(createAPanel());
-		CenterPanel.add(createHPanel());
-		CenterPanel.add(createIMPanel());
-		return CenterPanel;
-	}
-	
-	private Container createSouthPanel() {
-		Container southPanel = new Container();
-		southPanel.setLayout(new GridLayout(1,2));
-		southPanel.setSize(400,400);
-		southPanel.add(createShipPanel());
-		southPanel.add(createRotatePanel());
-		return southPanel;
-	}
-	
-	private Container createRotatePanel() {
-		Container rotatePanel = new Container();
-		rotatePanel.setLayout(new BorderLayout());
-		JButton viewMap = new JButton("View Influence Map");
-		viewMap.addMouseListener(new ShowButtonAction(this));
-		rotatePanel.add(viewMap, BorderLayout.NORTH);
-		setOutText(new JTextField("lookat me!"));
-		getOutText().setText("Welcome To Battleships. Place ships on the middle grid");
-		getOutText().setEditable(false);
-		rotatePanel.add(getOutText());
-		return rotatePanel;
-	}
-	
-	private Container createShipPanel() {
-		Container shipPanel = new Container();
-		shipPanel.setLayout(new GridLayout(4,2));
-		shipPanel.add(createTopShipPanel());
-		shipPanel.add(createTopShipLabelPanel());
-		shipPanel.add(createBottomShipPanel());
-		shipPanel.add(createFlowPanel());
-		return shipPanel;
-	}
-	
-	private Container createBottomShipPanel() {
-		Container bottomShipPanel = this.createFlowPanel();
-		bottomShipPanel.add(createRotateButton());
-		bottomShipPanel.add(createQuitButton());
-		return bottomShipPanel;
-	}
-	
-	private JButton createRotateButton() {
-		JButton rotateButton = new JButton("Rotate Ship");
-		rotateButton.addMouseListener(new RotateButtonAction(this));
-		return rotateButton;
-	}
-	
-	private JButton createQuitButton() {
-		JButton quitButton = new JButton("Quit");
-		quitButton.addMouseListener(new QuitButtonAction());
-		return quitButton;
-	}
-	
-	private JButton createNewButton() {
-		JButton NewButton = new JButton("New Game");
-		NewButton.addMouseListener(new NewButtonAction(this));
-		return NewButton;
-	}
-	
-	private JButton createHideButton() {
-		JButton hideButton = new JButton("Hide Influence Map");
-		hideButton.addMouseListener(new HideButtonAction(this));
-		return hideButton;
-	}
-	
-	private JButton createDestButton() {
-		JButton destButton = new JButton("Rotate");
-		return destButton;
-	}
-	
-	private Container createTopShipPanel() {
-		Container topShipPanel = this.createFlowPanel();
-		topShipPanel.add(createNewButton());
-		topShipPanel.add(createHideButton());
-		topShipPanel.add(createDestButton());
-		return topShipPanel;
-	}
-	
-	private Container createTopShipLabelPanel() {
-		Container topShipLabelPanel = new Container();
-		topShipLabelPanel.setLayout(new FlowLayout());
-		return topShipLabelPanel;
-	}
-	
-	private Container createGridPanel() {
-		Container Panel = new Container();
-		Panel.setLayout(new GridLayout());
-		return Panel;
-	}
-	
-	private Container createFlowPanel() {
-		Container Panel = new Container();
-		Panel.setLayout(new FlowLayout());
-		return Panel;
-	}
-	
-	private Container createAPanel() {
-		Container APanel = this.createGridPanel();
-		attackPanel = new AttackPanel();
-		attackPanel.addMouseListener(new AttackMousePressListener(attackPanel,gameState));
-		APanel.add(attackPanel);
-		return APanel;
-	}
-	
-	private Container createHPanel() {
-		Container HPanel = this.createGridPanel();
-		homePanel = new HomePanel();
-		homePanel.addMouseListener(new HomeMousePressListener(this));
-		HPanel.add(homePanel);
-		return HPanel;
-	}
-	
-	private Container createIMPanel() {
-		Container IMPanel = this.createGridPanel();
-		influenceMapPanel = new InfluencePanel();
-		IMPanel.add(influenceMapPanel);
-		return IMPanel;
+		super("Battleships");
+		guiFactory = new GUIFactory(this);
 	}
 	
 	public void setOut(String s)
@@ -258,8 +102,7 @@ public class GUI extends JFrame
 	{
 		 i = 0;
 		 j = 0;
-		 this.initializeVariables();
-		 this.finishLayout();
+		 guiFactory.resetLayout();
 	}
 		
 	public String placeAir(int i, int j)
@@ -531,9 +374,9 @@ public class GUI extends JFrame
 	{
 		setHoriz(!isShipRotatedHorizonally());
 		if(isShipRotatedHorizonally()&&!gameState.isBothPlayerAndAgentShipsDeployed())
-		getOutText().setText("Ship Will Be Placed Horizontally");
+		setOut("Ship Will Be Placed Horizontally");
 		if(!isShipRotatedHorizonally()&&!gameState.isBothPlayerAndAgentShipsDeployed())
-		getOutText().setText("Ship Will Be Placed Vertically");
+		setOut("Ship Will Be Placed Vertically");
 		return isShipRotatedHorizonally();
 	}
 	
@@ -541,7 +384,7 @@ public class GUI extends JFrame
 	{
 		showMap = true;
 		this.paintMap();
-		getOutText().setText("Influence Map shown");
+		setOut("Influence Map shown");
 	}
 	
 	public void hideMap()
@@ -559,20 +402,13 @@ public class GUI extends JFrame
 			}
 		}
 		
-		getOutText().setText("Influence Map Hidden");
+		setOut("Influence Map Hidden");
 	}	
 	
 	public boolean getGameOver()
 	{
 		return gameState.IsGameOver();
 	}
-
-	
-	
-
-	
-	
-	
 
 	/*
 	public void startDeployment()
@@ -584,7 +420,7 @@ public class GUI extends JFrame
 	{
 		if( minePlaced &&  destPlaced && subPlaced &&	battlePlaced &&  gameState.playerHomeGrid.isAirPlaced())
 		 gameState.SetAllShipsDeployed();
-		getOutText().setText("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
+		setOut("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
 		this. gameState.setPlayerTurn();
 		 outText.setText( gameState.turnToString());
 	} 
@@ -690,10 +526,6 @@ public class GUI extends JFrame
 		
 		
 	}
-		
-
-	
-
 
 	private void setHoriz(boolean horiz) {
 		this.horiz = horiz;
