@@ -193,7 +193,7 @@ public class Grid
 		int sqr = this.getGridVal(i,j);
 		
 		boolean hit = false;
-		
+		//TODO: OVDE FACTORY PATTERN
 		switch (sqr) {
 			case 0: hit= false; this.set(i,j,1); break;
 			case 1: hit= false; break;

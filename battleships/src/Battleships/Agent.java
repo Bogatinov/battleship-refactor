@@ -6,13 +6,22 @@ package Battleships;
  */
 import java.util.Random;
 
+import Battleships.Behaviors.ShooterBehavior;
+import Battleships.Factories.AgentShipSetterFactory;
+import Battleships.Factories.ShotFactory;
+import Battleships.Ships.AircraftCarrier;
+import Battleships.Ships.Battleship;
+import Battleships.Ships.Destroyer;
+import Battleships.Ships.Minesweeper;
+import Battleships.Ships.Submarine;
 public class Agent
 {
 	private InfluenceMap m = null;
 	private Grid g = null;
 	private int i=-1;
 	private int j=-1;
-	private Random generator;
+	private ShooterBehavior shooterBehavior;
+//	private Random generator;
 	
 	public Agent()
 	{
@@ -52,169 +61,27 @@ public class Agent
 		m.sunk(i,j);
 		return m;
 	}
-	
+
 	public void nextShot(InfluenceMap m1, Grid Attackgrid)
 	{
 		m = m1;
-		
 		g = Attackgrid;
-		
-		
-		if (m.getNumberOfHotspots()==0 )
-		{
-			NumberGenerator Powergen = new NumberGenerator();
-			
-			//while(compAtt.getGridVal(i-
-			i = Powergen.rand(10);
-			j = Powergen.rand(10);
-		}
-		
-		
-		//if there is only one HS get it's co-ordinates on the IM
-		
-				if (m.getNumberOfHotspots()==1 )
-				{
-					int checki = m.getHotspotI();
-					int checkj = m.getHotspotJ();
-					
-					if(g.getGridVal(checki, checkj) !=0)
-					{
-						m.set(checki, checkj, 0);
-						i= checki;
-						j= checkj;
-					}
-					
-					// if the element on the attack grid has not been hit then set i,j to it.
-					if(g.getGridVal(checki, checkj) ==0)
-					{
-						i= checki;
-						j= checkj;
-					}
-					
-					
-					else //set i, j to a random that has not been hit
-					{
-						generator = new Random();
-						
-						boolean empty =false;
-						//create random numbers
-						while(!empty)
-						{
-							checki = generator.nextInt(10);
-							checkj = generator.nextInt(10);
-							//if co-ord is empty then set i,j to them
-							if(g.getGridVal(checki, checkj) ==0)
-							{
-								empty = true;
-							}
-								
-						}
-					
-						i= checki;
-						j= checkj;
-					}
-						
-				}
-				
-				
-				//code to choose hotspots	
-				//pulls the first pair of co-ords from an array
-					if (m.getNumberOfHotspots()>1)
-					{	
-						boolean noneFound = false;
-						System.out.println("Target multiple hotspots");
-						int[] refs = m.getIntHotspots();
-					
-						if(g.getGridVal(refs[0],refs[1]) == 0)	
-							{
-								i=refs[0];
-								j=refs[1];
-							}
-						
-						else 
-						{
-							int loop =0;
-							while(g.isValidPlaceForAShip(i,j) && !noneFound)
-							{
-								if (loop ==100)
-									noneFound = true;
-								for (int q= 2; q < refs.length-1; q++)
-								{
-									i=refs[q];
-									j=refs[q+1];
-									
-								}
-								loop++;
-							}
-							
-						}
-
-						int length = refs.length-2;
-					
-						for (int z= 0; z < length; z++)
-						{
-							refs[z] = refs[z+2];
-							//refs[z+1] = z+2;
-						}
-					
-					}
-		
+		shooterBehavior = ShotFactory.getShooterBehavior(m.getNumberOfHotspots());
+		shooterBehavior.nextShot(m, g);
+		i = shooterBehavior.i;
+		j = shooterBehavior.j;
 	}
 	
 	public Grid placeShips()
 	{
-		//boolean
-		//g= new Grid(10,10);
-		NumberGenerator gen = new NumberGenerator();
-		int x,y,o;
 		while(!g.areShipsPlaced())
 		{
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			if(!g.isSubPlaced()) {
-				System.out.println("vertical sub x = " + x + "\n");
-				System.out.println("vertical sub y = " + y + "\n");
-				g.addSub(x, y, o);
-			}
-		
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);	
-			if(!g.isBattlePlaced()) {
-				System.out.println("vertical battle x = " + x + "\n");
-				System.out.println("vertical battle y = " + y + "\n");
-				g.addBattle(x,y, o);
-			}
-			
-	
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			if(!g.isAirPlaced()) {
-				System.out.println("vertical air x = " + x + "\n");
-				System.out.println("vertical air y = " + y + "\n");
-				g.addAir(x,y, o);
-			}
-		
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);	
-			if(!g.isMinePlaced()) {
-				System.out.println("vertical mine x = " + x + "\n");
-				System.out.println("vertical mine y = " + y + "\n");
-				g.addMine(x,y, o);
-			}
-
-			x = gen.rand(10);
-			y = gen.rand(10);
-			o = gen.rand(2);
-			if(!g.isDestPlaced()) {
-				System.out.println("horizontal dest x = " + x + "\n");
-				System.out.println("horizontal dest y = " + y + "\n");
-				g.addDest(x,y, o);
-			}
-
+			AgentShipSetterFactory factory = new AgentShipSetterFactory(g);
+			factory.setNextShip(AircraftCarrier.class.getName());
+			factory.setNextShip(Battleship.class.getName());
+			factory.setNextShip(Destroyer.class.getName());
+			factory.setNextShip(Minesweeper.class.getName());
+			factory.setNextShip(Submarine.class.getName());
 		}
 		
 		System.out.println("agent grid");

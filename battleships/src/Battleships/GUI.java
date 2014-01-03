@@ -247,11 +247,8 @@ public class GUI extends JFrame
 			{
 				if (gameState.playerHomeGrid.getGridVal(i,j) == 1)
 					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
-				else
-				if (gameState.compHomeGrid.getGridVal(i,j) < -1)
+				else if (gameState.compHomeGrid.getGridVal(i,j) < -1)
 					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));
-				
-				
 			}
 		}
 
