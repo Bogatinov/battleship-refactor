@@ -2,6 +2,7 @@ package Battleships.Behaviors;
 
 import Battleships.exception.PositionExceedsBoardException;
 import Battleships.exception.PositionOccupiedException;
+import Enums.GridValue;
 
 public class HShipGridSetter extends ShipGridSetterBehavior {
 
@@ -15,7 +16,7 @@ public class HShipGridSetter extends ShipGridSetterBehavior {
 	@Override
 	protected void IsPositionOccupied(int CoordinateX, int CoordinateY) {
 		for (int c = CoordinateY; c < CoordinateY + shipLength; c++) {
-			while (board.getGridVal(CoordinateX, c) != 0) {
+			while (board.getGridVal(CoordinateX, c) != GridValue.EmptyCellValue) {
 				throw new PositionOccupiedException();
 			}
 	}

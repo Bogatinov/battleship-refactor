@@ -6,12 +6,14 @@ package Battleships.Ships;
  */
 
 import Battleships.Grid;
+import Enums.GridValue;
+import Enums.Position;
 
 public class Battleship extends Ship
 {	
-	public Battleship(Grid board ,int i, int j, boolean isHorizontal)
+	public Battleship(Grid board ,Position position)
 	{
-		super(board,i,j,isHorizontal);
+		super(board,position);
 	}
 	
 
@@ -21,7 +23,7 @@ public class Battleship extends Ship
 	}
 	
 	@Override
-	protected int shipGridValue() {
-		return 4;
+	protected GridValue shipGridValue() {
+		return GridValue.BattleshipIntact;
 	}
 }

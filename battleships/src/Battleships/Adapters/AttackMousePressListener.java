@@ -6,18 +6,17 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTextField;
 
-import Battleships.GUI;
 import Battleships.GameState;
 import Battleships.Factories.AxisResolverFactory;
-import Battleships.Graphics.AttackPanel;
+import Battleships.Graphics.PlayerPanel;
 
 public class AttackMousePressListener extends MouseAdapter
 {
 	
-	private AttackPanel attackPanel;
+	private PlayerPanel attackPanel;
 	private GameState gameState;
 	
-	public AttackMousePressListener(AttackPanel attackPanel, GameState gameState)
+	public AttackMousePressListener(PlayerPanel attackPanel, GameState gameState)
 	{
 		this.attackPanel = attackPanel;
 		this.gameState = gameState;

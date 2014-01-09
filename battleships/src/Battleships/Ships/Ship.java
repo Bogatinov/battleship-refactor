@@ -8,18 +8,20 @@ package Battleships.Ships;
 import Battleships.Grid;
 import Battleships.Behaviors.ShipGridSetterBehavior;
 import Battleships.Factories.GridBehaviorSetterFactory;
+import Enums.GridValue;
+import Enums.Position;
 
 
 public abstract class Ship
 {
 	private int intactSegments;
-	private ShipGridSetterBehavior setOnGrid;
+	private ShipGridSetterBehavior onGrid;
 	
-	public Ship(Grid board, int CoordinateX, int CoordinateY, boolean isHorizontal) {
-		setOnGrid = GridBehaviorSetterFactory.CreateBehavior(isHorizontal);
+	public Ship(Grid board, Position position) {
+		onGrid = GridBehaviorSetterFactory.CreateBehavior(position.Orientation());
 		this.setShipLength();
 		this.setBoard(board);
-		this.setOnBoard(CoordinateX, CoordinateY);
+		this.setOnBoard(position.X(), position.Y());
 	}
 
 	public boolean isSunk() {
@@ -35,10 +37,10 @@ public abstract class Ship
 			throw new IllegalArgumentException("Segments var is less than 0");
 	}
 	private void setBoard(Grid board) {
-		setOnGrid.setBoard(board);
+		onGrid.setBoard(board);
 	}
 	private void setOnBoard(int coordinateX, int coordinateY) {
-		setOnGrid.placeShipOnGrid(coordinateX, coordinateY);
+		onGrid.placeShipOnGrid(coordinateX, coordinateY);
 	}
 	
 	protected int getIntactSegments() {
@@ -46,11 +48,9 @@ public abstract class Ship
 	}
 	protected void setIntactSegments(int intactSegments) {
 		this.intactSegments = intactSegments;
-		setOnGrid.setShipLength(intactSegments);
-		setOnGrid.setShipGridValue(shipGridValue());
+		onGrid.setShipLength(intactSegments);
+		onGrid.setShipGridValue(shipGridValue());
 	}
 	protected abstract void setShipLength();
-	protected int shipGridValue() {
-		return 9;
-	}
+	protected abstract GridValue shipGridValue();
 }

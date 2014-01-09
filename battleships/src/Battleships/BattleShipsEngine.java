@@ -44,7 +44,8 @@ public class BattleShipsEngine {
 		destPlaced = false;
 		subPlaced = false;
 		battlePlaced = false;
-		gui = new GUI(new GameState());
+		gameState = new GameState();
+		gui = new GUI(gameState);
 		smith = new Agent();
 	}
 	
@@ -57,10 +58,7 @@ public class BattleShipsEngine {
 	}
 	
 	private void waitForPlayerToPlaceShips() {
-		while(!gameState.arePlayerShipsDeployed())
-		{
-				//PlayerDeploymentPhase, wait for player to place all their ships
-		}
+		while(!gameState.arePlayerShipsDeployed()){}
 	}
 	
 	private void loadingGame() {

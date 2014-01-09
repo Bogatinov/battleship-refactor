@@ -2,6 +2,7 @@ package Battleships.Behaviors;
 
 import Battleships.Grid;
 import Battleships.InfluenceMap;
+import Enums.GridValue;
 
 public class ManyHotspotsBehavior extends ShooterBehavior {
 	private int []refs;
@@ -10,7 +11,7 @@ public class ManyHotspotsBehavior extends ShooterBehavior {
 		System.out.println("Target multiple hotspots");
 		refs = m1.getIntHotspots();
 
-		if(Attackgrid.getGridVal(refs[0],refs[1]) == 0)	
+		if(Attackgrid.getGridVal(refs[0],refs[1]) == GridValue.EmptyCellValue)	
 		{
 			i=refs[0];
 			j=refs[1];

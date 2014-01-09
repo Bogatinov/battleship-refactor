@@ -12,9 +12,6 @@ public class InfluenceMap
 	private int turns = 9999;
 	
 	private int hit = 9;
-		
-		
-	String coOrds = "";
 
 	/**
 		Creates an influence map from a two dimensional array as a 10 by 10 cells.
@@ -103,28 +100,7 @@ public class InfluenceMap
 		
 		return hs;
 	}
-	/**
-		Returns all the hotspot references as a single concatonated string,
-		If there is only one hotspot only i and j will be returned. If there are 
-		x hotspots then an i and j reference pair will be returned for each hotspot.
-	*/
-	public String getHotspots()
-	{
-		
-		//if(num > this.getNumberOfHotspots())
-		//	throw new IllegalArgumentException("too many hotspots");
-		//concatanates the references of the hotspots into a string
-		for(int i = 0; i<10; i++)
-		{	
-			for (int j = 0; j<10; j++)
-			{
-				if(map[i][j]== maxVal)
-				
-				coOrds = coOrds + i + j;	
-			}
-		}
-		return coOrds;
-	}
+
 	/**Returns an int array containing the hotspots*/
 	public int[] getIntHotspots()
 	{
@@ -158,12 +134,6 @@ public class InfluenceMap
 	{ 
 		return turns;
 	}
-	/** Sets the Number of tunrs that an influence map object took to win a game*/
-	public void setTurns(int t)
-	{
-		turns = t;
-	}
-	
 	/**
 		Increases the value of the specified cell's northern, southern, eastern and western
 		neighbour by one. The actual specified cell has it's value changed to 9. This method will not alter 
@@ -799,158 +769,6 @@ public class InfluenceMap
 		catch (ArrayIndexOutOfBoundsException e){/* do nothing*/}
 
 	}
-	
-	public void searchDeadends()
-	{
-		for (int a = 0; a< 10; a++)
-			for (int b = 0; b < 10; b++)
-				this.setDeadends(a,b);
-		
-	}
-		
-	
-	public void setDeadends(int i, int j)
-	{
-		int Dave;
-		boolean done = false;
-		
-		if(map[i][j]!=-5)
-		{
-			if(i==0&&j==0)
-			{
-				if(((!done)&&(map[i+1][j]==-9)&&(map[i][j+1]==-9)))
-				{
-					map[i][j]=-7;
-					done=true;
-				
-				}
-			}
-	
-		// enters statement if it is in a corner
-		//top right corner
-		
-			if((i==0)&&(j==9))
-			{	
-				if((!(done)&&(map[i+1][j]==-9)&&(map[i][j-1]==-9)))
-				{
-					map[i][j]=-7;
-					done=true;
-				
-				}
-			}
-		
-		
-		// enters statement if it is in a corner
-		//bottom left corner
-		
-			if((i==9)&&(j==0))
-			{	
-				if((!(done)&&(map[i-1][j]==-9)&&(map[i][j+1]==-9)))
-				{
-					map[i][j]=-7;
-					done=true;
-				
-				}
-			}
-				
-		// enters statement if it is in a corner
-		//bottom right corner
-		
-			if((i==9)&&(j==9))
-			{	
-				if((!(done)&&(map[i-1][j]==-9)&&(map[i][j-1]==-9)))
-				{
-					map[i][j]=-7;
-					done=true;
-				
-				}
-			}		
-		
-		
-		//attempts to throw an ArrayIndexOutOfBoundsException, this will mean the square is at an edge
-		//in this case the left edge
-			try
-			{
-				Dave = map[i][j-1];
-			}
-		
-		//checks around the Northern, Eastern and southern cells to check if they are all misses
-		//if they are it will reduce the influence map vlaue to the lowest possible value.
-		
-			catch (ArrayIndexOutOfBoundsException e)
-			{
-				if((i+1!=10)&&j+1!=10&&(i-1!=-1))
-				{
-					if(((!done)&&map[i+1][j]==-9)&&(map[i-1][j]==-9)&&(map[i][j+1]==-9))
-					{
-						map[i][j]=-7;
-						done=true;
-					}
-				}
-			}
-		
-		//attempts to throw an ArrayIndexOutOfBoundsException, this will mean the square is at an edge
-		//this is the right edge
-			try
-			{
-				Dave = map[i][j+1];
-			}
-		
-			catch (ArrayIndexOutOfBoundsException e)
-			{
-				if((i+1!=10)&&(i-1!=-1))
-				{
-					if(((!done)&&map[i+1][j]==-9)&&(map[i-1][j]==-9)&&(map[i][j-1]==-9))
-					{
-						map[i][j]=-7;
-						done=true;
-					}
-				}
-			}
-
-		//attempts to throw an ArrayIndexOutOfBoundsException, this will mean the square is at an edge
-		//this is the top edge		
-			try
-			{
-				Dave = map[i-1][j];
-			}
-		
-			catch (ArrayIndexOutOfBoundsException e)
-			{
-				if((i+1!=10)&&(j+1!=10))
-					{
-						if(((!done)&&map[i+1][j]==-9)&&(map[i][j+1]==-9)&&(map[i][j-1]==-9))
-						{
-							map[i][j]=-7;
-							done=true;
-						}
-					}
-			}
-		//attempts to throw an ArrayIndexOutOfBoundsException, this will mean the square is at an edge
-		//bottom edge
-			try
-			{
-				Dave = map[i+1][j];
-			}
-		
-			catch (ArrayIndexOutOfBoundsException e)
-			{
-			
-				if((i+1!=10)&&(j+1!=10))
-				{
-					if(((!done)&&map[i-1][j]==-9)&&(map[i][j+1]==-9)&&(map[i][j-1]==-9))
-					{
-						map[i][j]=-7;
-						done=true;
-					}
-				}
-			}		
-		
-		
-	}
-	
-	
-	}
 
 	
 	/**
@@ -959,9 +777,7 @@ public class InfluenceMap
 	public int getHotspotJ()
 	{
 		int x = 0;
-		int y = 0;	
 		int val = 0;
-		int ans = 0;
 		
 		for(int i = 0; i<10; i++)
 			for (int j = 0; j<10; j++)
@@ -970,11 +786,10 @@ public class InfluenceMap
 				if(map[i][j]>val && map[i][j]!= hit)
 				{
 					val = map[i][j];
-					y = i;
 					x = j;
 				}
 			}
-		return x ;
+		return x;
 			
 	}
 
@@ -983,10 +798,8 @@ public class InfluenceMap
 	*/	
 	public int getHotspotI()
 	{
-		int x = 0;
 		int y = 0;	
 		int val = 0;
-		int ans = 0;
 		
 		for(int i = 0; i<10; i++)
 			for (int j = 0; j<10; j++)
@@ -996,7 +809,6 @@ public class InfluenceMap
 				{
 					val = map[i][j];
 					y = i;
-					x = j;
 				}
 			}
 		return y;
@@ -1024,17 +836,6 @@ public class InfluenceMap
 					
 			}
 		}
-	}
-	
-	
-	/**
-		Sets all values in the influence map to 0
-	*/
-	public void clearAll()
-	{
-		for (int i = 0; i <10; i++)
-			for (int j=0; j<10; j++)
-				map[i][j] = 0;
 	}
 				
 	/**

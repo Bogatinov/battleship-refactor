@@ -5,12 +5,14 @@ package Battleships.Ships;
  * Modified: 05 December 2004 18:57:44
  */
 import Battleships.Grid;
+import Enums.GridValue;
+import Enums.Position;
 
 public class Minesweeper extends Ship
 {
-	public Minesweeper(Grid board, int i, int j, boolean isHorizontal)
+	public Minesweeper(Grid board, Position position)
 	{
-		super(board,i,j,isHorizontal);
+		super(board, position);
 	}
 
 	@Override
@@ -19,7 +21,7 @@ public class Minesweeper extends Ship
 	}	
 	
 	@Override
-	protected int shipGridValue() {
-		return 2;
+	protected GridValue shipGridValue() {
+		return GridValue.MinesweeperIntact;
 	}
 }

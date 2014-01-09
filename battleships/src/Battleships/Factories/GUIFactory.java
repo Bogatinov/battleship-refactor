@@ -17,9 +17,9 @@ import Battleships.Adapters.NewButtonAction;
 import Battleships.Adapters.QuitButtonAction;
 import Battleships.Adapters.RotateButtonAction;
 import Battleships.Adapters.ShowButtonAction;
-import Battleships.Graphics.AttackPanel;
-import Battleships.Graphics.HomePanel;
 import Battleships.Graphics.InfluencePanel;
+import Battleships.Graphics.PlayerPanel;
+import Enums.Orientation;
 
 public class GUIFactory {
 	private GUI gui;
@@ -27,7 +27,6 @@ public class GUIFactory {
 		this.gui = gui;
 		this.setLayout();
 		this.initializeVariables();
-		// gameState = paramGameState;
 		this.setContentPane();
 		this.finishLayout();
 	}
@@ -43,7 +42,7 @@ public class GUIFactory {
 		gui.paintSubSunk= false;
 		gui.paintBattleSunk= false;
 		gui.paintAirSunk= false;
-		gui.horiz = true;
+		gui.orientation = Orientation.Vertical;
 		gui.showMap= true;
 	}
 	
@@ -85,8 +84,8 @@ public class GUIFactory {
 		rotatePanel.add(viewMap, BorderLayout.NORTH);
 		this.gui.setOutText(new JTextField("lookat me!"));
 		this.gui.setOut("Welcome To Battleships. Place ships on the middle grid");
-		this.gui.getOutText().setEditable(false);
-		rotatePanel.add(this.gui.getOutText());
+		this.gui.outText.setEditable(false);
+		rotatePanel.add(this.gui.outText);
 		return rotatePanel;
 	}
 	
@@ -164,7 +163,7 @@ public class GUIFactory {
 	
 	private Container createAPanel() {
 		Container APanel = this.createGridPanel();
-		gui.attackPanel = new AttackPanel();
+		gui.attackPanel = new PlayerPanel();
 		gui.attackPanel.addMouseListener(new AttackMousePressListener(gui.attackPanel,gui.gameState));
 		APanel.add(gui.attackPanel);
 		return APanel;
@@ -172,7 +171,7 @@ public class GUIFactory {
 	
 	private Container createHPanel() {
 		Container HPanel = this.createGridPanel();
-		gui.homePanel = new HomePanel();
+		gui.homePanel = new PlayerPanel();
 		gui.homePanel.addMouseListener(new HomeMousePressListener(this.gui));
 		HPanel.add(gui.homePanel);
 		return HPanel;

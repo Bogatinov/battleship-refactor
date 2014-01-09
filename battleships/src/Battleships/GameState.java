@@ -3,10 +3,15 @@ package Battleships;
 import java.awt.Graphics;
 
 import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
 
 import Battleships.Graphics.HitIcon;
 import Battleships.Graphics.MissIcon;
+import Battleships.Ships.AircraftCarrier;
+import Battleships.Ships.Battleship;
+import Battleships.Ships.Destroyer;
+import Battleships.Ships.Minesweeper;
+import Battleships.Ships.Submarine;
+import Enums.GridValue;
 
 public class GameState {
 
@@ -58,32 +63,6 @@ public class GameState {
 		agentTurn = false;
 		playerShipsdeployed = false;
 	}
-
-	public void outputHitList(JTextComponent displayTextbox)
-	{
-		
-			if(compHomeGrid.isAirSunk())
-			{
-				displayTextbox.setText("You Have sunk the Agent's Aircraft Carrier");
-			}
-			if(compHomeGrid.isBattleSunk())
-			{
-				displayTextbox.setText(displayTextbox.getText() +("You Have sunk the Agent's Battleship"));
-			}
-			if(compHomeGrid.isDestSunk())
-			{
-				displayTextbox.setText(displayTextbox.getText() +("You Have sunk the Agent's Destroyer"));
-			}
-			if(compHomeGrid.isSubSunk())
-			{
-				displayTextbox.setText(displayTextbox.getText() +("You Have sunk the Agent's Submarine"));
-			}
-			if(compHomeGrid.isMineSunk())
-			{
-				displayTextbox.setText(displayTextbox.getText() + ("You Have sunk the Agent's Minesweeper"));
-			}
-		
-	}
 	
 	public boolean IsGameOver() {
 		return isGameOver;
@@ -91,39 +70,26 @@ public class GameState {
 
 	public void gameNotOver() {
 		isGameOver = false;
-
 	}
 
 	public void SetGameOver() {
 		isGameOver = true;
-
 	}
 
 	public void setShipSunkStates() {
-		playerAirSunk = playerHomeGrid.isAirSunk();
-		playerBattleSunk = playerHomeGrid.isBattleSunk();
-		playerDestSunk = playerHomeGrid.isDestSunk();
-		playerSubSunk = playerHomeGrid.isSubSunk();
-		playerMineSunk = playerHomeGrid.isMineSunk();
+		playerAirSunk = playerHomeGrid.isShipSunk(AircraftCarrier.class.getName());
+		playerBattleSunk = playerHomeGrid.isShipSunk(Battleship.class.getName());
+		playerDestSunk = playerHomeGrid.isShipSunk(Destroyer.class.getName());
+		playerSubSunk = playerHomeGrid.isShipSunk(Submarine.class.getName());
+		playerMineSunk = playerHomeGrid.isShipSunk(Minesweeper.class.getName());
+		allPlayerShipsSunk = playerHomeGrid.areShipsSunk();
 		
-		agentAirSunk = compHomeGrid.isAirSunk();
-		agentBattleSunk = compHomeGrid.isBattleSunk();
-		agentDestSunk = compHomeGrid.isDestSunk();
-		agentSubSunk = compHomeGrid.isSubSunk();
-		agentMineSunk = compHomeGrid.isMineSunk();
-
-		this.setAgentShipsSunk();
-		this.setPlayerShipsSunk();
-
-	}
-	private void setAgentShipsSunk() {
-		if(compHomeGrid.areShipsSunk())
-			allAgentShipsSunk = true;
-	}
-	
-	private void setPlayerShipsSunk() {
-		if (playerHomeGrid.areShipsSunk())
-			allPlayerShipsSunk = true;
+		agentAirSunk = compHomeGrid.isShipSunk(AircraftCarrier.class.getName());
+		agentBattleSunk = compHomeGrid.isShipSunk(Battleship.class.getName());
+		agentDestSunk = compHomeGrid.isShipSunk(Destroyer.class.getName());
+		agentSubSunk = compHomeGrid.isShipSunk(Submarine.class.getName());
+		agentMineSunk = compHomeGrid.isShipSunk(Minesweeper.class.getName());
+		allAgentShipsSunk = compHomeGrid.areShipsSunk();
 	}
 	
 	public boolean areAgentShipsSunk() {
@@ -133,45 +99,33 @@ public class GameState {
 	public boolean arePlayerShipsSunk() {
 		return allPlayerShipsSunk;
 	}
-
-	public void updatePlayerClick(int gridj, int gridi, Graphics attackPanelGraphics) {
-		if (playerTurn && !isGameOver && playerShipsdeployed) {
-			//System.out.println(acceptPlayerShot(gridi, gridj, attackPanelGraphics));
-			setShipSunkStates();
-		}
-	}
 	
 	public String acceptPlayerShot(int i, int j, Graphics attackPanelGraphics, JTextField outText)
 	{
-		int sqr = playerHomeGrid.getGridVal(i,j);
+		int sqr = playerHomeGrid.getGridVal(i,j).getValue();
 		String out ="";
 
-			if (sqr == 0)
+		if (sqr == 0)
+		{
+			boolean hit = false;
+			hit = compHomeGrid.shot(i,j);
+
+			if(hit)
 			{
-				boolean hit = false;
-				hit = compHomeGrid.shot(i,j);
-		
-				
-		
-				if(hit)
-				{
-					HitIcon.paint(attackPanelGraphics,(j*20),(i*20));
-					playerHomeGrid.set(i,j,9);
-					outText.setText("HIT! Have Another Turn!");
-				}
-				else
-				{
-					MissIcon.paint(attackPanelGraphics,(j*20),(i*20));
-					compHomeGrid.set(i,j,1);
-					playerHomeGrid.set(i,j,1);
-					out="Miss!"+ playerTurn;
-					outText.setText("Miss. Agent's Turn");
-					startAgentTurn();
-				}
+				new HitIcon(attackPanelGraphics,(j*20),(i*20));
+				playerHomeGrid.set(i,j,GridValue.SuccessfulShot);
+				outText.setText("HIT! Have Another Turn!");
 			}
-	
-		
-		
+			else
+			{
+				new MissIcon(attackPanelGraphics,(j*20),(i*20));
+				compHomeGrid.set(i,j,GridValue.MissedShot);
+				playerHomeGrid.set(i,j,GridValue.MissedShot);
+				out="Miss!"+ playerTurn;
+				outText.setText("Miss. Agent's Turn");
+				startAgentTurn();
+			}
+		}
 		setShipSunkStates();
 		
 		out = out + "CompHome " +compHomeGrid.toString();
@@ -195,10 +149,6 @@ public class GameState {
 	public boolean arePlayerShipsDeployed() {
 		return playerShipsdeployed;
 	}
-	
-	public boolean areAgentShipsDeployed() {
-		return agentShipsDeployed;
-	}
 
 	public void SetAllShipsDeployed() {
 		playerShipsdeployed = true;
@@ -213,22 +163,14 @@ public class GameState {
 		agentShipsDeployed = compHomeGrid.areShipsPlaced();
 	}
 
-//	public boolean isCompHomegridRefIsminus3(int i, int j) {
-//		return compHomeGrid.getGridVal(i,j) == -3;
-//	}
-//
-//	public boolean isCompHomeGridRefMinus4(int i, int j) {
-//		return compHomeGrid.getGridVal(i,j) == -4;
-//	}
-//
-//	public boolean isCompHomeGridLessThanMinus1(int i,int j) {
-//		return compHomeGrid.getGridVal(i,j) < -1;
-//	}
+	public boolean isCompHomeGridLessThanMinus1(int i,int j) {
+		return compHomeGrid.getGridVal(i,j).getValue() <= -1;
+	}
+	
 
 	public void startAgentTurn() {
 		agentTurn = true;
 		playerTurn = false;
-		
 	}
 
 	public boolean isPlayerTurn() {
@@ -258,13 +200,13 @@ public class GameState {
 	
 	public void determineIfShotSunkAShip(GUI gui, Agent smith) {
 		System.out.println("Player Home board \n" + playerHomeGrid.toString());
-		if(playerHomeGrid.isMineSunk())
+		if(playerHomeGrid.isShipSunk(Minesweeper.class.getName()))
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(playerHomeGrid.getGridVal(i,j) == -6)
+						if(playerHomeGrid.getGridVal(i,j) == GridValue.MinesweeperShot)
 						{
 							smith.setSunk(i,j);
 							gui.paintMineSunk = true;
@@ -273,13 +215,13 @@ public class GameState {
 				}
 		}
 		
-		if(playerHomeGrid.isDestSunk())
+		if(playerHomeGrid.isShipSunk(Destroyer.class.getName()))
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(playerHomeGrid.getGridVal(i,j) == -1)
+						if(playerHomeGrid.getGridVal(i,j) == GridValue.DestroyerShot)
 						{
 							smith.setSunk(i,j);
 							gui.paintDestSunk = true;
@@ -288,13 +230,13 @@ public class GameState {
 				}
 		}
 		
-		if(playerHomeGrid.isSubSunk())
+		if(playerHomeGrid.isShipSunk(Submarine.class.getName()))
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(playerHomeGrid.getGridVal(i,j) == -5)
+						if(playerHomeGrid.getGridVal(i,j) == GridValue.SubmarineShot)
 						{
 							smith.setSunk(i,j);
 							gui.paintSubSunk = true;	
@@ -303,13 +245,13 @@ public class GameState {
 				}
 		}
 		
-		if(playerHomeGrid.isBattleSunk())
+		if(playerHomeGrid.isShipSunk(Battleship.class.getName()))
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(playerHomeGrid.getGridVal(i,j) == -4)
+						if(playerHomeGrid.getGridVal(i,j) == GridValue.BattleshipShot)
 						{
 							smith.setSunk(i,j);
 							gui.paintBattleSunk = true;
@@ -318,13 +260,13 @@ public class GameState {
 				}
 		}
 		
-		if(playerHomeGrid.isAirSunk())
+		if(playerHomeGrid.isShipSunk(AircraftCarrier.class.getName()))
 		{
 				for (int i = 0; i < 10; i++) //change these to ROWS to use the default
 				{
 					for (int j = 0; j < 10; j++)//change this to CoLumns for default
 					{
-						if(playerHomeGrid.getGridVal(i,j) == -3)
+						if(playerHomeGrid.getGridVal(i,j) == GridValue.AircraftcarrierShot)
 						{
 							smith.setSunk(i,j);
 							gui.paintAirSunk = true;
@@ -332,5 +274,9 @@ public class GameState {
 					}
 				}
 		}
+	}
+
+	public boolean isPlayerMissedShot(int i, int j) {
+		return playerHomeGrid.getGridVal(i, j) == GridValue.MissedShot;
 	}
 }

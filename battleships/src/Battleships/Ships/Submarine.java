@@ -21,10 +21,12 @@ package Battleships.Ships;
  */
 
 import Battleships.Grid;
+import Enums.GridValue;
+import Enums.Position;
 
 public class Submarine extends Ship {
-	public Submarine(Grid board, int i, int j, boolean isHorizontal) {
-		super(board,i,j,isHorizontal);
+	public Submarine(Grid board, Position position) {
+		super(board,position);
 	}
 	
 	@Override
@@ -33,7 +35,7 @@ public class Submarine extends Ship {
 	}
 	
 	@Override
-	protected int shipGridValue() {
-		return 3;
+	protected GridValue shipGridValue() {
+		return GridValue.SubmarineIntact;
 	}
 }

@@ -1,11 +1,12 @@
 package Battleships.Behaviors;
 
 import Battleships.Grid;
+import Enums.GridValue;
 
 public abstract class ShipGridSetterBehavior {
 	protected Grid board;
 	protected int shipLength;
-	protected int shipGridValue;
+	protected GridValue shipGridValue;
 
 	public void setBoard(Grid board) {
 		this.board = board;
@@ -14,7 +15,7 @@ public abstract class ShipGridSetterBehavior {
 	public void setShipLength(int shipLength) {
 		this.shipLength = shipLength;
 	}
-	public void setShipGridValue(int shipGridValue) {
+	public void setShipGridValue(GridValue shipGridValue) {
 		this.shipGridValue = shipGridValue;
 	}
 	public void placeShipOnGrid(int CoordinateX, int CoordinateY) {			

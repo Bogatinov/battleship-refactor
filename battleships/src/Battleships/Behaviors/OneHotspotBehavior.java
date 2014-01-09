@@ -1,8 +1,10 @@
 package Battleships.Behaviors;
 
+import java.util.Random;
+
 import Battleships.Grid;
 import Battleships.InfluenceMap;
-import Battleships.NumberGenerator;
+import Enums.GridValue;
 
 public class OneHotspotBehavior extends ShooterBehavior {
 
@@ -19,18 +21,18 @@ public class OneHotspotBehavior extends ShooterBehavior {
 //		}
 		
 		// if the element on the attack grid has not been hit then set i,j to it.
-		if(Attackgrid.getGridVal(checki, checkj) != 0) {
+		if(Attackgrid.getGridVal(checki, checkj) != GridValue.EmptyCellValue) {
 			m1.set(checki, checkj, 0);
-			NumberGenerator Powergen = new NumberGenerator();
+			Random Powergen = new Random();
 			
 			boolean empty =false;
 			//create random numbers
 			while(!empty)
 			{
-				checki = Powergen.rand(10);
-				checkj = Powergen.rand(10);
+				checki = Powergen.nextInt(10);
+				checkj = Powergen.nextInt(10);
 				//if co-ord is empty then set i,j to them
-				if(Attackgrid.getGridVal(checki, checkj) ==0)
+				if(Attackgrid.getGridVal(checki, checkj) == GridValue.EmptyCellValue)
 				{
 					empty = true;
 				}

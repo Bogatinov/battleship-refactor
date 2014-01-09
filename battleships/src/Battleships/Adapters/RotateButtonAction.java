@@ -16,6 +16,6 @@ public class RotateButtonAction extends MouseAdapter {
 	
 	public void mousePressed(MouseEvent event)
 	{
-		System.out.println("Horiz = " +gui.rotate());
+		System.out.println("Orientation = " + gui.rotate().name());
 	}
 }
