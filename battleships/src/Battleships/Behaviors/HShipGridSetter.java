@@ -14,7 +14,7 @@ public class HShipGridSetter extends ShipGridSetterBehavior {
 		}
 
 	@Override
-	protected void IsPositionOccupied(int CoordinateX, int CoordinateY) {
+	protected void IsPositionOccupied(int CoordinateX, int CoordinateY) throws PositionOccupiedException {
 		for (int c = CoordinateY; c < CoordinateY + shipLength; c++) {
 			while (board.getGridVal(CoordinateX, c) != GridValue.EmptyCellValue) {
 				throw new PositionOccupiedException();
@@ -23,7 +23,7 @@ public class HShipGridSetter extends ShipGridSetterBehavior {
 	}
 
 	@Override
-	protected void IsPositionExceedsBoard(int CoordinateX, int CoordinateY) {
+	protected void IsPositionExceedsBoard(int CoordinateX, int CoordinateY) throws PositionExceedsBoardException {
 		if (CoordinateY + shipLength > board.getWidth()) {
 			throw new PositionExceedsBoardException();
 		}

@@ -1,5 +1,7 @@
 package Battleships.Factories;
 
+import java.util.Random;
+
 import Battleships.Grid;
 import Battleships.Ships.AircraftCarrier;
 import Battleships.Ships.Battleship;
@@ -9,6 +11,7 @@ import Battleships.Ships.Ship;
 import Battleships.Ships.Submarine;
 import Battleships.exception.PositionExceedsBoardException;
 import Battleships.exception.PositionOccupiedException;
+import Enums.Orientation;
 import Enums.Position;
 
 public class ShipFactory {

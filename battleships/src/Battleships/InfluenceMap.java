@@ -274,7 +274,7 @@ public class InfluenceMap
 			//dec right if odd
 			if(map[i][j+1]!= hit && map[i][j+1]%2==1)
 			{
-				map[i][j+1]= map[i][j+1] -9;
+				map[i][j+1]= map[i][j+1] - 9;
 			}
 		}
 		

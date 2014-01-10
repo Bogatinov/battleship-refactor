@@ -19,6 +19,7 @@ import Battleships.Ships.AircraftCarrier;
 import Battleships.Ships.Destroyer;
 import Battleships.Ships.Minesweeper;
 import Battleships.Ships.Ship;
+import Battleships.Ships.Submarine;
 import Battleships.exception.PositionExceedsBoardException;
 import Battleships.exception.PositionOccupiedException;
 import Enums.GridValue;
@@ -31,11 +32,6 @@ public class Grid
 	private int userRow;
 	private int userColumn;
 	private Map<String,Ship> ships;
-//	private Ship minesweeper;
-//	private Ship submarine;
-//	private Ship destroyer;
-//	private Ship battleship;
-//	private Ship aircraftCarrier;
 	private ShipFactory shipFactory;
 	
 	public Grid(int height, int width)
@@ -47,21 +43,21 @@ public class Grid
 		this.setShipFactory(new ShipFactory(this));
 	}
 	
-	public void setShipFactory(ShipFactory shipFactory) {
+	private void setShipFactory(ShipFactory shipFactory) {
 		this.shipFactory = shipFactory;
 	}	
-	public void InitializeBoard() {
+	private void InitializeBoard() {
 		board = new GridValue[userRow][userColumn];
 		
 		for (int row = 0; row < userRow; row++)
 			for (int column = 0; column < userColumn; column++)
 				board[row][column] = GridValue.EmptyCellValue;
 	}
-	public void setWidth(int width) {
+	private void setWidth(int width) {
 		this.userColumn = width;
 	}
 	
-	public void setHeight(int height) {
+	private void setHeight(int height) {
 		this.userRow = height;
 	}
 
@@ -87,14 +83,19 @@ public class Grid
 		return true;
 	}	
 	
+	public boolean isShipPlaced(String type) {
+		return ships.containsKey(type);
+	}
+	
 	public boolean isShipSunk(String type) {
-		return ships.containsKey(type) && ships.get(type).isSunk();
+		return isShipPlaced(type) && ships.get(type).isSunk();
 	}
 	
 	public boolean addShip(String type, Position position) {
 		try {
 			Ship ship = shipFactory.createShip(type, position);
 			ships.put(type, ship);
+			System.out.println(String.format("Placed %s %s \n",position.toString(),type));
 			return true;
 		}
 		catch (PositionOccupiedException Exception)
@@ -153,39 +154,21 @@ public class Grid
 		if(sqr == GridValue.AircraftcarrierIntact) {
 			ships.get(AircraftCarrier.class.getName()).scoreHit();
 			this.set(i, j, GridValue.AircraftcarrierShot);
-		} else if(sqr == GridValue.MinesweeperIntact) {
+		} 
+		else if(sqr == GridValue.MinesweeperIntact) {
 			ships.get(Minesweeper.class.getName()).scoreHit();
 			this.set(i, j, GridValue.MinesweeperShot);
-		} else if(sqr == GridValue.DestroyerIntact) {
+		} 
+		else if(sqr == GridValue.DestroyerIntact) {
 			ships.get(Destroyer.class.getName()).scoreHit();
-			
+		}
+		else if(sqr == GridValue.MinesweeperIntact) {
+			ships.get(Minesweeper.class.getName()).scoreHit();
+		}
+		else if(sqr == GridValue.SubmarineIntact) {
+			ships.get(Submarine.class.getName()).scoreHit();
 		}
 		return true;
-		
-//			case 2: minesweeper.scoreHit();
-//					this.set(i,j, (sqr - 8)); 
-//					hit= true;
-//					break;
-//			case 3: destroyer.scoreHit(); 
-//					this.set(i,j,(sqr - 8)); 
-//					hit= true;
-//					break;		
-//			case 4: battleship.scoreHit(); 
-//					this.set(i,j,(sqr - 8)); 
-//					hit= true;
-//					break;
-//			case 5: aircraftCarrier.scoreHit(); 
-//					this.set(i,j,(sqr - 8)); 
-//					hit= true;
-//					break;
-//			case 7: submarine.scoreHit(); 
-//					this.set(i,j,(sqr - 8)); 
-//					hit= true;
-//					break;
-//			default: 
-//					break; 
-//		}
-//		return hit;
 	}
 
 	public String toString()

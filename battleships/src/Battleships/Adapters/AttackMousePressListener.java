@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTextField;
 
 import Battleships.GameState;
-import Battleships.Factories.AxisResolverFactory;
+import Battleships.Factories.ResolverFactory;
 import Battleships.Graphics.PlayerPanel;
 
 public class AttackMousePressListener extends MouseAdapter
@@ -45,6 +45,6 @@ public class AttackMousePressListener extends MouseAdapter
 			}
 
 			private int resolveAxisCoOrdinate(int x) {
-				return AxisResolverFactory.resolveAxisCoOrdinate(x);
+				return ResolverFactory.AxisCoOrdinate(x);
 			}	
 }

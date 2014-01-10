@@ -32,16 +32,13 @@ public class GUIFactory {
 	}
 	
 	public void resetLayout() {
+		this.setLayout();
 		this.initializeVariables();
+		this.setContentPane();
 		this.finishLayout();
 	}
 	
 	private void initializeVariables() {
-		gui.paintMineSunk= false;
-		gui.paintDestSunk= false;
-		gui.paintSubSunk= false;
-		gui.paintBattleSunk= false;
-		gui.paintAirSunk= false;
 		gui.orientation = Orientation.Vertical;
 		gui.showMap= true;
 	}

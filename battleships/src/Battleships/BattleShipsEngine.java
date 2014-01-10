@@ -1,18 +1,7 @@
 package Battleships;
 
 public class BattleShipsEngine {
-	
 	public GameState gameState;
-	public boolean agentWins;
-	public boolean minePlaced;
-	public boolean destPlaced;
-	public boolean subPlaced;
-	public boolean battlePlaced;
-	
-	public boolean agentMineSunk;
-	public boolean agentDestSunk;
-	public boolean agentSubSunk;
-	public boolean agentAirSunk;
 	private GUI gui;
 	private Agent smith;
 
@@ -40,10 +29,6 @@ public class BattleShipsEngine {
 	}
 	
 	private void initializeVariables() {
-		minePlaced = false;
-		destPlaced = false;
-		subPlaced = false;
-		battlePlaced = false;
 		gameState = new GameState();
 		gui = new GUI(gameState);
 		smith = new Agent();
@@ -64,11 +49,11 @@ public class BattleShipsEngine {
 	private void loadingGame() {
 		gameState.addAgentShips(smith.placeShips());
 		gameState.setPlayerTurn();
-		gui.outText.setText(gameState.turnToString());
+		gui.setOut(gameState.turnToString());
 	}
 	
 	private void startGame() {
-		while (!gameState.IsGameOver())
+		while (!gameState.areAgentShipsSunk() && !gameState.arePlayerShipsSunk())
 		{
 			this.PlayerTurn();
 			gui.repaint();
@@ -78,7 +63,6 @@ public class BattleShipsEngine {
 	private void isAgentWinner() {
 		if(gameState.arePlayerShipsSunk())
 		{
-			gameState.SetGameOver();
 			gameState.setPlayerTurn();
 		}
 	}
@@ -86,18 +70,16 @@ public class BattleShipsEngine {
 		if(gameState.areAgentShipsSunk())
 		{
 			System.out.println("All sunk");
-			gameState.SetGameOver();
-			gameState.PlayerIsTheWinner();
 		}
 	}
 	private void AgentTurn() {
 		while(gameState.isAgentTurn()) {
 			System.out.println("agent turn");
 			smith.nextShot(gameState.influenceMap, gameState.compHomeGrid);
-			gui.agentShot(smith.getI(),smith.getJ());
+			gameState.agentShot(smith.getI(),smith.getJ(),this.gui);
 			System.out.println("shot at " + smith.getI() + " " +smith.getJ());
 			System.out.println(gameState.compHomeGrid.toString());
-			gameState.determineIfShotSunkAShip(gui, smith);
+			smith.setSunk(smith.getI(), smith.getJ());
 			gameState.setShipSunkStates();
 			this.threadSleep(1000);
 			this.isAgentWinner();
@@ -116,11 +98,6 @@ public class BattleShipsEngine {
 			gameState.setShipSunkStates();
 			this.isPlayerWinner();
 		}
-	}
-	
-	private void resetGame() {
-		gameState = new GameState();
-		gui.reset();
 	}
 	
 	public static void main (String args[])
