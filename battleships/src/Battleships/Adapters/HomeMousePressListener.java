@@ -19,21 +19,24 @@ public class HomeMousePressListener extends MouseAdapter {
 	}
 
 	public void mousePressed(MouseEvent event) {
-		int gridj= resolveAxisCoOrdinate(event.getX());
-		int gridi= resolveAxisCoOrdinate(event.getY());
+		if(!gui.gameState.arePlayerShipsDeployed()) {
+			int gridj= resolveAxisCoOrdinate(event.getX());
+			int gridi= resolveAxisCoOrdinate(event.getY());
 
-		boolean valid = gui.placeShip(currentShip, new Position(gridi, gridj, gui.orientation));
-		if(valid) 
-			currentShip = ResolverFactory.nextShip(currentShip);
-		
-		if(currentShip == null)
-			gui.gameState.setPlayerShipsDeployed();
-		System.out.println("Element corresponds to " + gridi + gridj);
-		
-		if(gui.gameState.arePlayerShipsDeployed()) {
-			gui.setOut("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
-			gui.setOut(gui.gameState.turnToString());
-		}	
+			boolean valid = gui.placeShip(currentShip, new Position(gridi, gridj, gui.orientation));
+			if(valid) 
+				currentShip = ResolverFactory.nextShip(currentShip);
+
+			if(currentShip == null) {
+				gui.gameState.setPlayerShipsDeployed();
+			}
+			System.out.println("Element corresponds to " + gridi + gridj);
+
+			if(gui.gameState.arePlayerShipsDeployed()) {
+				gui.setOut("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
+				gui.setOut(gui.gameState.turnToString());
+			}
+		}
 	}
 	private int resolveAxisCoOrdinate(int x) {
 		return ResolverFactory.AxisCoOrdinate(x);

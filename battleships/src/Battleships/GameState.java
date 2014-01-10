@@ -43,14 +43,6 @@ public class GameState {
 		allAgentShipsSunk = compHomeGrid.areShipsSunk();
 	}
 
-	public boolean areAgentShipsSunk() {
-		return allAgentShipsSunk;
-	}
-
-	public boolean arePlayerShipsSunk() {
-		return allPlayerShipsSunk;
-	}
-
 	public String acceptPlayerShot(int i, int j, Graphics attackPanelGraphics)
 	{
 		String out ="";
@@ -67,8 +59,7 @@ public class GameState {
 			MissIcon.paint(attackPanelGraphics,j,i);
 			compHomeGrid.set(i,j,GridValue.MissedShot);
 			out="Miss!"+ playerTurn;
-			startAgentTurn();
-
+			changeTurn();
 		}
 		setShipSunkStates();
 
@@ -81,6 +72,10 @@ public class GameState {
 
 	public boolean isPlayerWinner() {
 		return allAgentShipsSunk;
+	}
+	
+	public boolean isAgentWinner() {
+		return allPlayerShipsSunk;
 	}
 
 	public boolean isBothPlayerAndAgentShipsDeployed() {
@@ -107,36 +102,25 @@ public class GameState {
 	public boolean isPlayerHitShot(int i,int j) {
 		return compHomeGrid.getGridVal(i,j).getValue() <= -1;
 	}
-
-
-	public void startAgentTurn() {
-		agentTurn = true;
-		playerTurn = false;
+	
+	public void changeTurn() {
+		playerTurn = !playerTurn; 
 	}
 
 	public boolean isPlayerTurn() {
-		return playerTurn && !agentTurn;
-	}
-
-
-	public void setPlayerTurn()
-	{
-		playerTurn= true;
-		agentTurn = false;	
+		return playerTurn;
 	}
 
 	public String turnToString() {
 
 		if(playerTurn)
 			return "Player turn, take a shot";
-		else if(agentTurn)
-			return "Agent turn, please wait";
 		else
-			return "Error! neither player's turn";
+			return "Agent turn, please wait";
 	}
 
 	public boolean isAgentTurn() {
-		return agentTurn && !playerTurn;
+		return !playerTurn;
 	}
 
 	public boolean isPlayerMissedShot(int i, int j) {
@@ -144,7 +128,7 @@ public class GameState {
 	}
 
 	public void agentShot(int X, int Y, GUI gui)	{
-		GridValue sqrVal =  playerHomeGrid.getGridVal(X,Y);
+		GridValue sqrVal = playerHomeGrid.getGridVal(X,Y);
 
 		if(sqrVal == GridValue.MissedShot) {
 			System.out.println("Shot already taken! Have another go"); 
@@ -157,7 +141,7 @@ public class GameState {
 			Graphics hp =  gui.homePanel.getGraphics();	
 			MissIcon.paint(hp,Y,X);
 			gui.setOut("Agent Has Missed. Player's Turn");
-			setPlayerTurn();
+			changeTurn();
 			gui.setOut(turnToString());
 		} else if(sqrVal.getValue() > 1) {
 			System.out.println(playerHomeGrid.shot(X,Y));
@@ -167,15 +151,10 @@ public class GameState {
 			HitIcon.paint(hp,Y,X);
 			gui.setOut("Agent Has Hit One Of your ships! Agent's Turn again");
 			gui.paintMap();
-
 		}
 
 		System.out.println("compAtt");						
 		System.out.println(compHomeGrid.toString());
-
-		if(sqrVal==GridValue.EmptyCellValue)
-			setPlayerTurn();		
-
 		System.out.println("Map is \n" +  influenceMap.toString());
 	}
 }

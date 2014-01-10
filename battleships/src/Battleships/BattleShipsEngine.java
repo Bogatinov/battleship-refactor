@@ -48,30 +48,19 @@ public class BattleShipsEngine {
 	
 	private void loadingGame() {
 		gameState.addAgentShips(smith.placeShips());
-		gameState.setPlayerTurn();
+		gameState.changeTurn();
 		gui.setOut(gameState.turnToString());
 	}
 	
 	private void startGame() {
-		while (!gameState.areAgentShipsSunk() && !gameState.arePlayerShipsSunk())
+		while (!gameState.isPlayerWinner() && !gameState.isAgentWinner())
 		{
 			this.PlayerTurn();
 			gui.repaint();
 			this.AgentTurn();
 		}
 	}
-	private void isAgentWinner() {
-		if(gameState.arePlayerShipsSunk())
-		{
-			gameState.setPlayerTurn();
-		}
-	}
-	private void isPlayerWinner() {
-		if(gameState.areAgentShipsSunk())
-		{
-			System.out.println("All sunk");
-		}
-	}
+
 	private void AgentTurn() {
 		while(gameState.isAgentTurn()) {
 			System.out.println("agent turn");
@@ -82,7 +71,6 @@ public class BattleShipsEngine {
 			smith.setSunk(smith.getI(), smith.getJ());
 			gameState.setShipSunkStates();
 			this.threadSleep(1000);
-			this.isAgentWinner();
 		}
 	}
 	private void threadSleep(int miliseconds) {
@@ -96,7 +84,6 @@ public class BattleShipsEngine {
 		while (gameState.isPlayerTurn())
 		{
 			gameState.setShipSunkStates();
-			this.isPlayerWinner();
 		}
 	}
 	
