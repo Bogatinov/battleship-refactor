@@ -144,50 +144,38 @@ public class GameState {
 	}
 
 	public void agentShot(int X, int Y, GUI gui)	{
-		if(agentTurn &&  isBothPlayerAndAgentShipsDeployed())
-		{
-			GridValue sqrVal =  playerHomeGrid.getGridVal(X,Y);
+		GridValue sqrVal =  playerHomeGrid.getGridVal(X,Y);
 
-			if(sqrVal == GridValue.EmptyCellValue || sqrVal == GridValue.MissedShot)
-			{
-				System.out.println("Shot already taken! Have another go"); 
-			}
+		if(sqrVal == GridValue.MissedShot) {
+			System.out.println("Shot already taken! Have another go"); 
+		}
+		else if(sqrVal == GridValue.EmptyCellValue) {
+			System.out.println( playerHomeGrid.shot(X,Y));
+			playerHomeGrid.set(X,Y,GridValue.MissedShot);
+			influenceMap.miss(X,Y);
+			gui.paintMap();
+			Graphics hp =  gui.homePanel.getGraphics();	
+			MissIcon.paint(hp,Y,X);
+			gui.setOut("Agent Has Missed. Player's Turn");
+			setPlayerTurn();
+			gui.setOut(turnToString());
+		} else if(sqrVal.getValue() > 1) {
+			System.out.println(playerHomeGrid.shot(X,Y));
+			playerHomeGrid.set(X,Y,GridValue.SuccessfulShot);
+			influenceMap.hit(X,Y);
+			Graphics hp =  gui.homePanel.getGraphics();	
+			HitIcon.paint(hp,Y,X);
+			gui.setOut("Agent Has Hit One Of your ships! Agent's Turn again");
+			gui.paintMap();
 
-			if(sqrVal == GridValue.EmptyCellValue)
-			{
-				System.out.println( playerHomeGrid.shot(X,Y));
-				playerHomeGrid.set(X,Y,GridValue.MissedShot);
-				influenceMap.miss(X,Y);
-				gui.paintMap();
-				Graphics hp =  gui.homePanel.getGraphics();	
-				MissIcon.paint(hp,Y,X);
-				gui.setOut("Agent Has Missed. Player's Turn");
-				setPlayerTurn();
-				gui.setOut(turnToString());
-			} 
+		}
 
-			if(sqrVal.getValue() > 1)
-			{
-				System.out.println(playerHomeGrid.shot(X,Y));
-				playerHomeGrid.set(X,Y,GridValue.SuccessfulShot);
-				influenceMap.hit(X,Y);
-				Graphics hp =  gui.homePanel.getGraphics();	
-				HitIcon.paint(hp,Y,X);
-				gui.setOut("Agent Has Hit One Of your ships! Agent's Turn again");
-				gui.paintMap();
+		System.out.println("compAtt");						
+		System.out.println(compHomeGrid.toString());
 
-			}
-
-			System.out.println("compAtt");						
-			System.out.println(compHomeGrid.toString());
-
-			if(sqrVal==GridValue.EmptyCellValue)
-				setPlayerTurn();
-
-		}		
+		if(sqrVal==GridValue.EmptyCellValue)
+			setPlayerTurn();		
 
 		System.out.println("Map is \n" +  influenceMap.toString());
-
-
 	}
 }
