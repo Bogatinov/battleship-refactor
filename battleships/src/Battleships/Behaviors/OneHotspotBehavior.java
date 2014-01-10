@@ -13,16 +13,9 @@ public class OneHotspotBehavior extends ShooterBehavior {
 		int checki = m1.getHotspotI();
 		int checkj = m1.getHotspotJ();
 		
-//		if(Attackgrid.getGridVal(checki, checkj) !=0)
-//		{
-//			m1.set(checki, checkj, 0);
-//			i= checki;
-//			j= checkj;
-//		}
-		
 		// if the element on the attack grid has not been hit then set i,j to it.
 		if(Attackgrid.getGridVal(checki, checkj) != GridValue.EmptyCellValue) {
-			m1.set(checki, checkj, 0);
+			m1.set(checki, checkj, GridValue.EmptyCellValue.getValue());
 			Random Powergen = new Random();
 			
 			boolean empty =false;

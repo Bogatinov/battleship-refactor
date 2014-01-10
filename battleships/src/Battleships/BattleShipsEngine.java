@@ -31,7 +31,7 @@ public class BattleShipsEngine {
 	private void initializeVariables() {
 		gameState = new GameState();
 		gui = new GUI(gameState);
-		smith = new Agent();
+		smith = new Agent(gameState.influenceMap, gameState.compHomeGrid);
 	}
 	
 	private void printInitialState() {
@@ -56,7 +56,6 @@ public class BattleShipsEngine {
 		while (!gameState.isPlayerWinner() && !gameState.isAgentWinner())
 		{
 			this.PlayerTurn();
-			gui.repaint();
 			this.AgentTurn();
 		}
 	}
@@ -64,7 +63,7 @@ public class BattleShipsEngine {
 	private void AgentTurn() {
 		while(gameState.isAgentTurn()) {
 			System.out.println("agent turn");
-			smith.nextShot(gameState.influenceMap, gameState.compHomeGrid);
+			smith.nextShot();
 			gameState.agentShot(smith.getI(),smith.getJ(),this.gui);
 			System.out.println("shot at " + smith.getI() + " " +smith.getJ());
 			System.out.println(gameState.compHomeGrid.toString());

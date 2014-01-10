@@ -40,22 +40,6 @@ public class GUI extends JFrame
 		outText.setText(s);
 	}
 	
-	public void repaint()
-	{
-		Graphics attackPanelGraphics = attackPanel.getGraphics();	
-		
-		for (int i = 0; i < 10; i++) //change these to ROWS to use the default
-		{
-			for (int j = 0; j < 10; j++)//change this to CoLumns for default
-			{
-				if (gameState.isPlayerMissedShot(i,j))
-					MissIcon.paint(attackPanelGraphics,j,i);
-				else if (gameState.isPlayerHitShot(i,j))
-					HitIcon.paint(attackPanelGraphics,j,i);
-			}
-		}
-
-	}
 			
 	public void reset()
 	{

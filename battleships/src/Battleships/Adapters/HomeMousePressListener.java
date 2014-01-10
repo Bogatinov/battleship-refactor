@@ -27,9 +27,6 @@ public class HomeMousePressListener extends MouseAdapter {
 		boolean valid = gui.placeShip(currentShip, new Position(gridX, gridY, gui.orientation));
 		if(valid) 
 			currentShip = ResolverFactory.nextShip(currentShip);
-	}
-	
-	private void NoMoreShips() {
 		if(currentShip == null) {
 			gui.gameState.setPlayerShipsDeployed();
 		}
@@ -48,7 +45,6 @@ public class HomeMousePressListener extends MouseAdapter {
 			int gridj= resolveAxisCoOrdinate(event.getX());
 			int gridi= resolveAxisCoOrdinate(event.getY());
 			this.AddShip(gridi, gridj);
-			this.NoMoreShips();
 			this.Print();
 		}
 	}

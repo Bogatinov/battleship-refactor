@@ -14,6 +14,10 @@ public abstract class ShipGridSetterBehavior {
 		this.board = board;
 	}
 
+	public int getShipLength() {
+		return shipLength;
+	}
+
 	public void setShipLength(int shipLength) {
 		this.shipLength = shipLength;
 	}

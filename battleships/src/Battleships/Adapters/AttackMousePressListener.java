@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JTextField;
-
 import Battleships.GameState;
 import Battleships.Factories.ResolverFactory;
 import Battleships.Graphics.PlayerPanel;

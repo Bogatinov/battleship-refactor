@@ -14,40 +14,29 @@ import Enums.Position;
 
 public abstract class Ship
 {
-	private int intactSegments;
 	private ShipGridSetterBehavior onGrid;
 	
 	public Ship(Grid board, Position position) {
 		onGrid = GridBehaviorSetterFactory.CreateBehavior(position.Orientation());
 		this.setShipLength();
-		this.setBoard(board);
-		this.setOnBoard(position.X(), position.Y());
+		onGrid.setBoard(board);
+		onGrid.placeShipOnGrid(position.X(), position.Y());
 	}
 
 	public boolean isSunk() {
-		return getIntactSegments() == 0;
+		return onGrid.getShipLength() == 0;
 	}
 	public void scoreHit() {
 		this.areIntactSegmentsLessThanZero();
-		this.setIntactSegments(this.getIntactSegments()-1);
+		onGrid.setShipLength(onGrid.getShipLength() - 1);
 	}
 	
 	private void areIntactSegmentsLessThanZero() {
-		if (getIntactSegments() < 0)
+		if (onGrid.getShipLength() < 0)
 			throw new IllegalArgumentException("Segments var is less than 0");
 	}
-	private void setBoard(Grid board) {
-		onGrid.setBoard(board);
-	}
-	private void setOnBoard(int coordinateX, int coordinateY) {
-		onGrid.placeShipOnGrid(coordinateX, coordinateY);
-	}
-	
-	protected int getIntactSegments() {
-		return intactSegments;
-	}
+
 	protected void setIntactSegments(int intactSegments) {
-		this.intactSegments = intactSegments;
 		onGrid.setShipLength(intactSegments);
 		onGrid.setShipGridValue(shipGridValue());
 	}

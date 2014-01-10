@@ -2,8 +2,6 @@ package Battleships;
 
 import java.awt.Graphics;
 
-import javax.swing.JTextField;
-
 import Battleships.Graphics.HitIcon;
 import Battleships.Graphics.MissIcon;
 import Enums.GridValue;
@@ -21,7 +19,6 @@ public class GameState {
 	private boolean allPlayerShipsSunk;
 
 	public Grid compHomeGrid;
-	public boolean agentTurn;
 	private boolean allAgentShipsSunk;
 
 	public InfluenceMap influenceMap;
@@ -32,8 +29,7 @@ public class GameState {
 		playerHomeGrid = new Grid(WidthOfGrid, HeightOfGrid);
 		compHomeGrid = new Grid(WidthOfGrid, HeightOfGrid);
 		influenceMap = new InfluenceMap();
-		playerTurn = true;
-		agentTurn = false;
+		playerTurn = false;
 		playerShipsdeployed = false;
 	}
 
