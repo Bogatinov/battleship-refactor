@@ -15,7 +15,7 @@ public class HomeMousePressListener extends MouseAdapter {
 	public HomeMousePressListener(GUI gui)
 	{
 		this.gui = gui;
-		this.currentShip = AircraftCarrier.class.getName();
+		this.currentShip = AircraftCarrier.class.getSimpleName();
 	}
 
 	public void mousePressed(MouseEvent event) {

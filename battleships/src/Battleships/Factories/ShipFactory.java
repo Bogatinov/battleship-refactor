@@ -1,7 +1,5 @@
 package Battleships.Factories;
 
-import java.util.Random;
-
 import Battleships.Grid;
 import Battleships.Ships.AircraftCarrier;
 import Battleships.Ships.Battleship;
@@ -11,7 +9,6 @@ import Battleships.Ships.Ship;
 import Battleships.Ships.Submarine;
 import Battleships.exception.PositionExceedsBoardException;
 import Battleships.exception.PositionOccupiedException;
-import Enums.Orientation;
 import Enums.Position;
 
 public class ShipFactory {
@@ -22,23 +19,23 @@ public class ShipFactory {
 	public Ship createShip(String type, Position position) throws PositionOccupiedException, PositionExceedsBoardException {
 		Ship ship = null;
 		
-			if(type.equals(AircraftCarrier.class.getName())) {
+			if(type.equals(AircraftCarrier.class.getSimpleName())) {
 				ship = new AircraftCarrier(grid, position);
 			} 
 			
-			else if(type.equals(Battleship.class.getName())) {
+			else if(type.equals(Battleship.class.getSimpleName())) {
 				ship = new Battleship(grid, position);
 			}
 			
-			else if(type.equals(Destroyer.class.getName())) {
+			else if(type.equals(Destroyer.class.getSimpleName())) {
 				ship = new Destroyer(grid, position);
 			}
 			
-			else if(type.equals(Minesweeper.class.getName())) {
+			else if(type.equals(Minesweeper.class.getSimpleName())) {
 				ship = new Minesweeper(grid, position);
 			}
 			
-			else if(type.equals(Submarine.class.getName())) {
+			else if(type.equals(Submarine.class.getSimpleName())) {
 				ship = new Submarine(grid, position);
 			}
 

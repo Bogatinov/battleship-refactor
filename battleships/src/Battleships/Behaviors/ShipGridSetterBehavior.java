@@ -26,7 +26,7 @@ public abstract class ShipGridSetterBehavior {
 		this.UpdateBoard(CoordinateX, CoordinateY);
 	}
 
-	protected abstract void IsPositionExceedsBoard(int CoordinateX, int CoordinateY) throws PositionExceedsBoardException;
-	protected abstract void IsPositionOccupied(int CoordinateX, int CoordinateY) throws PositionOccupiedException;
+	protected abstract void IsPositionExceedsBoard(int CoordinateX, int CoordinateY);
+	protected abstract void IsPositionOccupied(int CoordinateX, int CoordinateY);
 	protected abstract void UpdateBoard(int CoordinateX, int CoordinateY);
 }
