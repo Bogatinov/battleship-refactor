@@ -22,8 +22,10 @@ public class HomeMousePressListener extends MouseAdapter {
 		int gridj= resolveAxisCoOrdinate(event.getX());
 		int gridi= resolveAxisCoOrdinate(event.getY());
 
-		gui.placeShip(currentShip, new Position(gridi, gridj, gui.orientation));
-		currentShip = ResolverFactory.nextShip(currentShip);
+		boolean valid = gui.placeShip(currentShip, new Position(gridi, gridj, gui.orientation));
+		if(valid) 
+			currentShip = ResolverFactory.nextShip(currentShip);
+		
 		if(currentShip == null)
 			gui.gameState.setPlayerShipsDeployed();
 		System.out.println("Element corresponds to " + gridi + gridj);

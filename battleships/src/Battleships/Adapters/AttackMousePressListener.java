@@ -35,9 +35,8 @@ public class AttackMousePressListener extends MouseAdapter
 				
 					Graphics attackPanelGraphics = attackPanel.getGraphics();
 					
-	                JTextField outText = null;
 					String acceptPlayerShotString = 
-	                	gameState.acceptPlayerShot(gridi,gridj, attackPanelGraphics, outText);
+	                	gameState.acceptPlayerShot(gridi,gridj, attackPanelGraphics);
 
 					System.out.println(acceptPlayerShotString);
 					System.out.println("Element corresponds to " + gridi + gridj);

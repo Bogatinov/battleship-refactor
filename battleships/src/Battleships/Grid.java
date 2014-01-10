@@ -16,6 +16,7 @@ import java.util.Map;
 
 import Battleships.Factories.ShipFactory;
 import Battleships.Ships.AircraftCarrier;
+import Battleships.Ships.Battleship;
 import Battleships.Ships.Destroyer;
 import Battleships.Ships.Minesweeper;
 import Battleships.Ships.Ship;
@@ -152,36 +153,40 @@ public class Grid
 		}
 		
 		if(sqr == GridValue.AircraftcarrierIntact) {
-			ships.get(AircraftCarrier.class.getName()).scoreHit();
+			ships.get(AircraftCarrier.class.getSimpleName()).scoreHit();
 			this.set(i, j, GridValue.AircraftcarrierShot);
 		} 
 		else if(sqr == GridValue.MinesweeperIntact) {
-			ships.get(Minesweeper.class.getName()).scoreHit();
+			ships.get(Minesweeper.class.getSimpleName()).scoreHit();
 			this.set(i, j, GridValue.MinesweeperShot);
 		} 
 		else if(sqr == GridValue.DestroyerIntact) {
-			ships.get(Destroyer.class.getName()).scoreHit();
+			ships.get(Destroyer.class.getSimpleName()).scoreHit();
+			this.set(i, j, GridValue.DestroyerShot);
 		}
-		else if(sqr == GridValue.MinesweeperIntact) {
-			ships.get(Minesweeper.class.getName()).scoreHit();
+		else if(sqr == GridValue.BattleshipIntact) {
+			ships.get(Battleship.class.getSimpleName()).scoreHit();
+			this.set(i, j, GridValue.BattleshipShot);
 		}
 		else if(sqr == GridValue.SubmarineIntact) {
-			ships.get(Submarine.class.getName()).scoreHit();
+			ships.get(Submarine.class.getSimpleName()).scoreHit();
+			this.set(i, j, GridValue.SubmarineShot);
 		}
 		return true;
 	}
 
 	public String toString()
 	{
-		String r = "";
+		StringBuilder r = new StringBuilder();
 		for (int i = 0; i < userRow; i++) //change these to ROWS to use the default
 		{
-			
-			r = r + "|";
-			for (int j = 0; j < userColumn; j++)//change this to CoLumns for default
-				r = r + board[i][j];
-			r= r + "|\n";
+			r.append("|");
+			for (int j = 0; j < userColumn; j++) {
+				r.append(board[i][j].getValue());
+			}
+				
+			r.append("\n");
 		}
-		return r;
+		return r.toString();
 	}
 }

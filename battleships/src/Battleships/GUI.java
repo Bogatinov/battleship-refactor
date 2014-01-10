@@ -49,9 +49,9 @@ public class GUI extends JFrame
 			for (int j = 0; j < 10; j++)//change this to CoLumns for default
 			{
 				if (gameState.isPlayerMissedShot(i,j))
-					new MissIcon(attackPanelGraphics,(j*20),(i*20));
-				else if (gameState.isCompHomeGridLessThanMinus1(i,j))
-					new HitIcon(attackPanelGraphics,(j*20),(i*20));
+					MissIcon.paint(attackPanelGraphics,j,i);
+				else if (gameState.isPlayerHitShot(i,j))
+					HitIcon.paint(attackPanelGraphics,j,i);
 			}
 		}
 
@@ -65,7 +65,7 @@ public class GUI extends JFrame
 		 guiFactory.resetLayout();
 	}
 	
-	public String placeShip(String type, Position position) {
+	public boolean placeShip(String type, Position position) {
 		StringBuilder out = new StringBuilder();
 		boolean valid = gameState.playerHomeGrid.addShip(type, position);
 
@@ -74,12 +74,13 @@ public class GUI extends JFrame
 			ShipGraphicFactory.paint(type, hp, position);
 			out.append(gameState.playerHomeGrid.toString());
 			setOut(type + " Placed");
+			return true;
 		} else {
 			setOut(type + " Will Not Fit Here");
 			out.append("not valid ");
 			out.append(gameState.playerHomeGrid.toString());
+			return false;
 		}
-		return out.toString();
 	}
 	
 	public Orientation rotate()
@@ -138,8 +139,6 @@ public class GUI extends JFrame
 		}
 	}
 	
-	
-
 	private void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
