@@ -15,27 +15,41 @@ public class HomeMousePressListener extends MouseAdapter {
 	public HomeMousePressListener(GUI gui)
 	{
 		this.gui = gui;
-		this.currentShip = AircraftCarrier.class.getSimpleName();
+	}
+	
+	private void NewGame() {
+		if(currentShip == null) {
+			this.currentShip = AircraftCarrier.class.getSimpleName();
+		}
+	}
+	
+	private void AddShip(int gridX, int gridY) {
+		boolean valid = gui.placeShip(currentShip, new Position(gridX, gridY, gui.orientation));
+		if(valid) 
+			currentShip = ResolverFactory.nextShip(currentShip);
+	}
+	
+	private void NoMoreShips() {
+		if(currentShip == null) {
+			gui.gameState.setPlayerShipsDeployed();
+		}
+	}
+	
+	private void Print() {
+		if(gui.gameState.arePlayerShipsDeployed()) {
+			gui.setOut("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
+			gui.setOut(gui.gameState.turnToString());
+		}
 	}
 
 	public void mousePressed(MouseEvent event) {
 		if(!gui.gameState.arePlayerShipsDeployed()) {
+			this.NewGame();
 			int gridj= resolveAxisCoOrdinate(event.getX());
 			int gridi= resolveAxisCoOrdinate(event.getY());
-
-			boolean valid = gui.placeShip(currentShip, new Position(gridi, gridj, gui.orientation));
-			if(valid) 
-				currentShip = ResolverFactory.nextShip(currentShip);
-
-			if(currentShip == null) {
-				gui.gameState.setPlayerShipsDeployed();
-			}
-			System.out.println("Element corresponds to " + gridi + gridj);
-
-			if(gui.gameState.arePlayerShipsDeployed()) {
-				gui.setOut("All Ships Deployed, Player's Turn! Click on the left grid to fire shots");
-				gui.setOut(gui.gameState.turnToString());
-			}
+			this.AddShip(gridi, gridj);
+			this.NoMoreShips();
+			this.Print();
 		}
 	}
 	private int resolveAxisCoOrdinate(int x) {

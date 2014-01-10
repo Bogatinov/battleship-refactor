@@ -59,9 +59,6 @@ public class GUI extends JFrame
 			
 	public void reset()
 	{
-		 i = 0;
-		 j = 0;
-		 gameState = new GameState();
 		 guiFactory.resetLayout();
 	}
 	

@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import Battleships.GUI;
+import Battleships.GameState;
 import Battleships.Adapters.AttackMousePressListener;
 import Battleships.Adapters.HideButtonAction;
 import Battleships.Adapters.HomeMousePressListener;
@@ -36,6 +37,9 @@ public class GUIFactory {
 		this.initializeVariables();
 		this.setContentPane();
 		this.finishLayout();
+		 gui.i = 0;
+		 gui.j = 0;
+		 gui.gameState = new GameState();
 	}
 	
 	private void initializeVariables() {
