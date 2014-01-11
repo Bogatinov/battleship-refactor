@@ -1,10 +1,14 @@
 package Battleships.Factories;
 
+import java.util.Random;
+
 import Battleships.Ships.AircraftCarrier;
 import Battleships.Ships.Battleship;
 import Battleships.Ships.Destroyer;
 import Battleships.Ships.Minesweeper;
 import Battleships.Ships.Submarine;
+import Enums.Orientation;
+import Enums.Position;
 
 public class ResolverFactory {
 	public static int AxisCoOrdinate(int Coordinate) {
@@ -40,5 +44,14 @@ public class ResolverFactory {
 		else if(current.equalsIgnoreCase(Submarine.class.getSimpleName()))
 			return Minesweeper.class.getSimpleName();
 		return null;
+	}
+	
+	public static Position randomPosition() {
+		Random random = new Random();
+		int x = random.nextInt(10);
+		int y = random.nextInt(10);
+		boolean orientation = random.nextBoolean();
+		return new Position(x, y, 
+				orientation == true ? Orientation.Horizontal : Orientation.Vertical);
 	}
 }

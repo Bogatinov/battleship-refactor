@@ -37,13 +37,12 @@ public class BattleShipsEngine {
 	private void printInitialState() {
 		System.out.println("PlayerTurn " + gameState.isPlayerTurn());
 		System.out.println("Deployed " + gameState.isBothPlayerAndAgentShipsDeployed());
-		
-		System.out.println("PlayerTurn " + gameState.isPlayerTurn());	
-		System.out.println("Deployed " + gameState.isBothPlayerAndAgentShipsDeployed());
 	}
 	
 	private void waitForPlayerToPlaceShips() {
-		while(!gameState.arePlayerShipsDeployed()){}
+		while(!gameState.arePlayerShipsDeployed()) {
+			
+		}
 	}
 	
 	private void loadingGame() {
@@ -69,10 +68,10 @@ public class BattleShipsEngine {
 			System.out.println(gameState.compHomeGrid.toString());
 			smith.setSunk(smith.getI(), smith.getJ());
 			gameState.setShipSunkStates();
-			this.threadSleep(1000);
+			this.wait(1000);
 		}
 	}
-	private void threadSleep(int miliseconds) {
+	private void wait(int miliseconds) {
 		try {
 			Thread.sleep(miliseconds);
 		} catch (InterruptedException e) {
