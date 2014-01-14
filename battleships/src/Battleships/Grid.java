@@ -153,8 +153,7 @@ public class Grid
 				return true;
 			}
 		}
-		return false;
-		
+		return true;
 	}
 
 	public String toString()

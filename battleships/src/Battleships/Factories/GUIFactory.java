@@ -165,7 +165,7 @@ public class GUIFactory {
 	private Container createAPanel() {
 		Container APanel = this.createGridPanel();
 		gui.attackPanel = new PlayerPanel();
-		gui.attackPanel.addMouseListener(new AttackMousePressListener(gui.attackPanel,gui.gameState));
+		gui.attackPanel.addMouseListener(new AttackMousePressListener(gui));
 		APanel.add(gui.attackPanel);
 		return APanel;
 	}

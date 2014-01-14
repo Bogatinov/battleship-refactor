@@ -1,40 +1,33 @@
 package Battleships.Adapters;
 
-import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import Battleships.GameState;
+import Battleships.GUI;
 import Battleships.Factories.ResolverFactory;
-import Battleships.Graphics.PlayerPanel;
 
 public class AttackMousePressListener extends MouseAdapter
 {
+	private GUI gui;
 	
-	private PlayerPanel attackPanel;
-	private GameState gameState;
-	
-	public AttackMousePressListener(PlayerPanel attackPanel, GameState gameState)
+	public AttackMousePressListener(GUI gui)
 	{
-		this.attackPanel = attackPanel;
-		this.gameState = gameState;
+		this.gui = gui;
 	}
 	  
 	
 			public void mousePressed(MouseEvent event)
 			{
-				if(gameState.IsAcceptingPlayerInput())
+				if(gui.IsAcceptingPlayerInput())
 				{
 					int x = event.getX();
 					int y = event.getY();
 				
 					int gridj= resolveAxisCoOrdinate(x);
 					int gridi= resolveAxisCoOrdinate(y);
-				
-					Graphics attackPanelGraphics = attackPanel.getGraphics();
 					
 					String acceptPlayerShotString = 
-	                	gameState.acceptPlayerShot(gridi,gridj, attackPanelGraphics);
+	                	gui.acceptPlayerShot(gridi,gridj);
 
 					System.out.println(acceptPlayerShotString);
 					System.out.println("Element corresponds to " + gridi + gridj);

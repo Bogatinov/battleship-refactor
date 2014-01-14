@@ -46,11 +46,44 @@ public class GUI extends JFrame
 		 guiFactory.resetLayout();
 	}
 	
+	public boolean IsAcceptingPlayerInput() {
+		return gameState.isPlayerTurn() && gameState.arePlayerShipsDeployed();
+	}
+	
+	public String acceptPlayerShot(int i, int j) {
+		StringBuilder out = new StringBuilder();
+		if(gameState.playerShot(i, j))
+		{
+			HitIcon.paint(attackPanel.getGraphics(),j,i);
+		}
+		else
+		{
+			MissIcon.paint(attackPanel.getGraphics(),j,i);
+			out.append("Miss!"+ gameState.isPlayerTurn());
+			gameState.changeTurn();
+		}
+		gameState.setShipSunkStates();
+		return out.toString();	
+	}
+	
+	public void acceptAgentShot(int i, int j) {
+		Graphics hp = homePanel.getGraphics();
+		if(gameState.agentShot(i, j)) {
+			HitIcon.paint(hp,j,i);
+			setOut("Agent Has Hit One Of your ships! Agent's Turn again");
+			paintMap();
+		} else {
+			paintMap();	
+			MissIcon.paint(hp,j,i);
+			setOut("Agent Has Missed. Player's Turn");
+			setOut(gameState.turnToString());
+			gameState.changeTurn();
+		}
+	}
+	
 	public boolean placeShip(String type, Position position) {
 		StringBuilder out = new StringBuilder();
-		boolean valid = gameState.playerHomeGrid.addShip(type, position);
-
-		if(valid) {
+		if(gameState.placeShip(type, position)) {
 			Graphics hp = homePanel.getGraphics();
 			ShipGraphicFactory.paint(type, hp, position);
 			out.append(gameState.playerHomeGrid.toString());

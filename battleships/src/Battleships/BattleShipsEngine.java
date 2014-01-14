@@ -46,8 +46,8 @@ public class BattleShipsEngine {
 	}
 	
 	private void loadingGame() {
-		gameState.addAgentShips(smith.placeShips());
 		gameState.changeTurn();
+		gameState.addAgentShips(smith.placeShips());
 		gui.setOut(gameState.turnToString());
 	}
 	
@@ -63,7 +63,7 @@ public class BattleShipsEngine {
 		while(gameState.isAgentTurn()) {
 			System.out.println("agent turn");
 			smith.nextShot();
-			gameState.agentShot(smith.getI(),smith.getJ(),this.gui);
+			gui.acceptAgentShot(smith.getI(),smith.getJ());
 			System.out.println("shot at " + smith.getI() + " " +smith.getJ());
 			System.out.println(gameState.compHomeGrid.toString());
 			smith.setSunk(smith.getI(), smith.getJ());
