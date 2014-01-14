@@ -84,6 +84,7 @@ public class GameState {
 
 	public void setPlayerShipsDeployed() {
 		playerShipsdeployed = true;
+		changeTurn();
 	}
 
 	public boolean IsAcceptingPlayerInput() {
